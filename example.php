@@ -1,12 +1,12 @@
 <?php
 /*
- * This is an example on how to use the new ITRechtkanzlei plugin SDK.
+ * This is an example on how to use the new IT-Recht Kanzlei plugin SDK.
  *
- * This SDK is made to be used for developing own plugins in connection with the document push/getaccoutlist/version calls of our system.
+ * This SDK is made to be used for developing own plugins in connection with the document push/getaccountlist/version calls of our system.
  * It is very easy to use because only 3 methods of the ITRechtKanzlei\LTIHandler class have to be overwritten here:
  *  - public function isTokenValid(string $token): bool;
  *  - public function handleActionPush(ITRechtKanzlei\LTIPushData $data): ITRechtKanzlei\LTIPushResult;
- *  - publich function handleActionGetAccountList(): ITRechtKanzlei\LTIGetAccountListResult;
+ *  - public function handleActionGetAccountList(): ITRechtKanzlei\LTIGetAccountListResult;
  * More detailed information on the methods can be found in the class ITRechtKanzlei\LTIHandler.
  *
  * The SDK can be used in just 2 steps (see example below):
@@ -19,7 +19,7 @@
  *
  * The example below shows you how to use the SDK properly.
  */
-require_once __DIR__ . "/src/LTI.php";
+require_once __DIR__ . "/sdk/LTI.php";
 
 class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
     public function isTokenValid(string $token): bool {
@@ -30,7 +30,7 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
     public function handleActionGetVersion(): \ITRechtKanzlei\LTIVersionResult {
         $result = new \ITRechtKanzlei\LTIVersionResult();
 
-        // Inludes the list of installed apache2 modules if php is running as an
+        // Includes the list of installed apache2 modules if php is running as an
         // apache2 module. This helps the support of IT-Recht Kanzlei to troubleshoot
         // problematic interactions between the modules and this plugin.
         $result->includeApacheModules(true);
@@ -39,11 +39,11 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
         // This helps with troubleshooting problematic interactions between those plugins.
         $plugins = [
             'plugin-image-enhancer' => '2.4.2',
-            'plugin-multilingual' => '5.23',
-            'plugin-herpderp' => '9001.3.1415',
+            'plugin-multilingual'   => '5.23',
+            'plugin-herpderp'       => '9001.3.1415',
         ];
         foreach ($plugins as $plugin => $version) {
-            $result->addPluginInfo($plugin, $$version);
+            $result->addPluginInfo($plugin, $version);
         }
 
         return $result;
@@ -57,11 +57,11 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
 
     // This method only has to be created, if your system is a multishop system.
     public function handleActionGetAccountList(): \ITRechtKanzlei\LTIAccountListResult {
-        // add all your shops here to the $accoutlist like seen in the example.
+        // add all your shops here to the $accountList like seen in the example.
         $accountList = new \ITRechtKanzlei\LTIAccountListResult();
-        $accountList->addAccount('1', 'example store name 1');
-        $accountList->addAccount('2', 'example store name 2');
-        $accountList->addAccount('3', 'example store name 3');
+        $accountList->addAccount('3', 'example store name 1');
+        $accountList->addAccount('8', 'example store name 2');
+        $accountList->addAccount('122', 'example store name 3');
 
         return $accountList;
     }

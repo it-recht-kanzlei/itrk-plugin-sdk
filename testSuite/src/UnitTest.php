@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginSDKTestSuite;
 include_once __DIR__ . '/ColorCodes.php';
 
@@ -14,9 +15,9 @@ class UnitTest {
         $this->multishop = $multishop;
     }
 
-    public function runTest($testName) {
+    public function runTest($testName): void {
         $fileHandle = fopen($testName, "r") or die("Unable to open file!");
-        $jsonContent = json_decode(fread($fileHandle,filesize($testName)));
+        $jsonContent = json_decode(fread($fileHandle, filesize($testName)));
         fclose($fileHandle);
 
         if (isset($jsonContent->multishop) && $jsonContent->multishop != $this->multishop) {
@@ -29,12 +30,16 @@ class UnitTest {
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->apiUrl);
-        curl_setopt($ch, CURLOPT_HEADER, TRUE);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, [ "xml" => $jsonContent->data ]);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_FAILONERROR, FALSE);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ["xml" => $jsonContent->data]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FAILONERROR, false);
         $response = curl_exec($ch);
+
+        if ($response === false) {
+            self::writeWithColor(ColorCodes::RED, 'cURL error: ' . curl_error($ch));
+        }
 
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $header = substr($response, 0, $header_size);
@@ -78,13 +83,13 @@ class UnitTest {
         curl_close($ch);
     }
 
-    public function getTestsStatus()  {
+    public function getTestsStatus(): bool {
         return $this->testsStatus;
     }
 
-    public static function writeWithColor($color, $text) {
-        echo sprintf("%s %s \n", $color, $text);
+    public static function writeWithColor($color, $text): void {
+        echo sprintf("%s%s\n", $color, $text);
         echo ColorCodes::RESET;
     }
 
-};
+}

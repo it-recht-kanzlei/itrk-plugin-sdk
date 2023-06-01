@@ -1,7 +1,8 @@
-<?php 
+<?php
 /*
  * Please do NOT edit this class to ensure that the code remains executable.
  */
+
 namespace ITRechtKanzlei;
 
 require_once __DIR__ . '/LTIPushData.php';
@@ -11,14 +12,14 @@ require_once __DIR__ . '/LTIPushResult.php';
 require_once __DIR__ . '/LTIVersionResult.php';
 
 abstract class LTIHandler {
-    public function sendResponse(string $responseResult) {
+    public function sendResponse(string $responseResult): void {
         header('Content-Type: application/xml; charset=utf-8');
         header('Content-Length: ' . strlen($responseResult));
         echo $responseResult;
     }
 
     /**
-     * This method can be overwritten by you if you wish to extend the resonse
+     * This method can be overwritten by you if you wish to extend the response
      * with useful debugging information. See LTIVersionResult for more details.
      */
     public function handleActionGetVersion(): \ITRechtKanzlei\LTIVersionResult {
@@ -26,7 +27,7 @@ abstract class LTIHandler {
     }
 
     /**
-     * This method must be overwritten by you. Please add a check mechanism to check wether the sent token is valid or not.
+     * This method must be overwritten by you. Please add a check mechanism to check whether the sent token is valid or not.
      * Singleshop systems might implement the check like it is made in the example.php file.
      * Multishop systems maybe need database select to check the token.
      */

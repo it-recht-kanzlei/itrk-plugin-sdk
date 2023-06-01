@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginSDKTestSuite;
 
 $postData = $_POST;
@@ -9,6 +10,9 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
         return $token == 'TEST_TOKEN';
     }
 
+    /**
+     * @throws \Exception
+     */
     public function handleActionPush(\ITRechtKanzlei\LTIPushData $data): \ITRechtKanzlei\LTIPushResult {
         if ($data->getType() != 'impressum' && $data->hasPdf()) {
             $data->getPdf();

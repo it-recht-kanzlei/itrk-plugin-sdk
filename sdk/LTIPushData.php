@@ -2,14 +2,16 @@
 /*
  * Please do NOT edit this class to ensure that the code remains executable.
  */
+
 namespace ITRechtKanzlei;
 
 class LTIPushData {
     protected $postData = null;
-    private $allowedDocumentTypes = [
-        'agb', 'datenschutz', 'widerruf', 'impressum'
-    ];
+    private $allowedDocumentTypes = ['agb', 'datenschutz', 'widerruf', 'impressum'];
 
+    /**
+     * @throws \Exception
+     */
     public function __construct(\SimpleXMLElement $postData) {
         $this->postData = $postData;
 
@@ -17,45 +19,48 @@ class LTIPushData {
     }
 
     public function getTitle(): string {
-        return (string) $this->postData->rechtstext_title;
+        return (string)$this->postData->rechtstext_title;
     }
 
     public function getTextHtml(): string {
-        return (string) $this->postData->rechtstext_html;
+        return (string)$this->postData->rechtstext_html;
     }
 
     public function getText(): string {
-        return (string) $this->postData->rechtstext_text;
+        return (string)$this->postData->rechtstext_text;
     }
 
     public function getLanguageIso639_1(): string {
-        return (string) $this->postData->rechtstext_language;
+        return (string)$this->postData->rechtstext_language;
     }
 
     public function getLanguageIso639_2b(): string {
-        return (string) $this->postData->rechtstext_language_iso639_2b;
+        return (string)$this->postData->rechtstext_language_iso639_2b;
     }
 
     public function getType(): string {
-        return (string) $this->postData->rechtstext_type;
+        return (string)$this->postData->rechtstext_type;
     }
 
     public function getCountry(): string {
-        return (string) $this->postData->rechtstext_country;
+        return (string)$this->postData->rechtstext_country;
     }
 
     public function getFileName(): string {
-        return (string) $this->postData->rechtstext_pdf_filenamebase_suggestion;
+        return (string)$this->postData->rechtstext_pdf_filenamebase_suggestion;
     }
 
     public function getLocalizedFileName(): string {
-        return (string) $this->postData->rechtstext_pdf_localized_filenamebase_suggestion;
+        return (string)$this->postData->rechtstext_pdf_localized_filenamebase_suggestion;
     }
 
     public function hasPdf(): bool {
         return ($this->postData->rechtstext_pdf != null) && !empty($this->postData->rechtstext_pdf);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getPdf(): string {
         if (!$this->hasPdf()) {
             throw new \Exception('No pdf available!', LTIError::INVALID_DOCUMENT_PDF);
@@ -66,14 +71,17 @@ class LTIPushData {
             throw new \Exception('Sent pdf cannot be recognized as such!', LTIError::INVALID_DOCUMENT_PDF);
         }
 
-        return (string) $pdfBin;
+        return (string)$pdfBin;
     }
 
     public function getApiVersion(): string {
-        return (string) $this->postData->api_version;
+        return (string)$this->postData->api_version;
     }
 
-    private function checkXmlData() {
+    /**
+     * @throws \Exception
+     */
+    private function checkXmlData(): void {
         $this->checkXmlElementAvailable('rechtstext_type', $this->allowedDocumentTypes, LTIError::INVALID_DOCUMENT_TYPE);
         if ((string)$this->postData->rechtstext_type !== 'impressum') {
             $this->checkXmlElementAvailable('rechtstext_pdf', null, LTIError::INVALID_DOCUMENT_PDF);
@@ -89,7 +97,10 @@ class LTIPushData {
         $this->checkXmlElementAvailable('rechtstext_language_iso639_2b', null, LTIError::INVALID_DOCUMENT_LANGUAGE);
     }
 
-    protected function checkXmlElementAvailable($name, $allowedValues = null, $errorCode = 1) {
+    /**
+     * @throws \Exception
+     */
+    protected function checkXmlElementAvailable($name, $allowedValues = null, $errorCode = 1): void {
         try {
             $value = $this->postData->$name;
 
@@ -98,10 +109,10 @@ class LTIPushData {
             }
 
             if (empty($value)) {
-                throw new \Exception('XML element '. $name . '\'s value is empty!', $errorCode);
+                throw new \Exception('XML element ' . $name . '\'s value is empty!', $errorCode);
             }
         } catch (\Exception $e) {
-            throw new \Exception('XML element '. $name . ' not set!', $errorCode);
+            throw new \Exception('XML element ' . $name . ' not set!', $errorCode);
         }
     }
 }

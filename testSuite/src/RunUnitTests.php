@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginSDKTestSuite;
 include_once __DIR__ . '/ColorCodes.php';
 include_once __DIR__ . '/UnitTest.php';
@@ -8,7 +9,7 @@ $available_long_options = [
     'multishop:',
     'api-token::',
     'api-url::',
-    'test-name::'
+    'test-name::',
 ];
 $args = getopt($available_short_options, $available_long_options);
 
@@ -31,17 +32,17 @@ if (!isset($args['multishop'])) {
         echo sprintf("\t--%s=VALUE", rtrim($option, ':')) . "\n";
     }
     return;
-} else if (!isset($args['api-token']) && isset($args['api-url'])) {
+} elseif (!isset($args['api-token']) && isset($args['api-url'])) {
     UnitTest::writeWithColor(
         ColorCodes::YELLOW,
         "You added a target url but not a token! The tests could fail because of this! \n"
-        ."If parsing the tests response failes you probably entered a wrong target url... \n\n"
+        . "If parsing the tests response fails you probably entered a wrong target url... \n\n"
     );
 }
 
 $multishop = $args['multishop'] == 'true';
-$apiUrl = isset($args['api-url']) ? $args['api-url'] : "http://localhost:7080/UnitTestEndpoint.php";
-$apiToken = isset($args['api-token']) ? $args['api-token'] : null;
+$apiUrl = $args['api-url'] ?? "http://localhost:7080/UnitTestEndpoint.php";
+$apiToken = $args['api-token'] ?? null;
 
 $unitTest = new UnitTest($apiUrl, $apiToken, $multishop);
 
@@ -58,5 +59,5 @@ if (!isset($args['test-name'])) {
         UnitTest::writeWithColor(ColorCodes::RED, "At least one test did not pass successful!");
     }
 } else {
-    $unitTest->runTest(__DIR__ . sprintf('/testCases/%s.json', $args['test-name']));
+    $unitTest->runTest(__DIR__ . sprintf('/../testCases/%s.json', $args['test-name']));
 }

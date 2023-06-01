@@ -2,6 +2,7 @@
 /*
  * Please do NOT edit this class to ensure that the code remains executable.
  */
+
 namespace ITRechtKanzlei;
 
 use SimpleXMLElement;
@@ -9,7 +10,7 @@ use SimpleXMLElement;
 require_once __DIR__ . '/LTIResult.php';
 
 /**
- * The resonse class for the GetVersion call.
+ * The response class for the GetVersion call.
  *
  * This class can collect some additional information about its environment that
  * can be used for debugging and troubleshooting issues.
@@ -52,7 +53,7 @@ class LTIVersionResult extends \ITRechtKanzlei\LTIResult {
      */
     public function addPluginInfo(string $pluginName, string $version): self {
         $this->systemPlugins[] = [
-            'name' => $pluginName,
+            'name'    => $pluginName,
             'version' => $version,
         ];
         return $this;

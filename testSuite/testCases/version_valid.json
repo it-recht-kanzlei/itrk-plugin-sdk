@@ -1,7 +1,7 @@
 {
-    "name": "Version valid",
-    "data" : "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><user_auth_token>TEST_TOKEN</user_auth_token><action>getversion</action></api>",
-    "result": {
-        "status": "success"
-    }
+  "name": "Version valid",
+  "data": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><user_auth_token>TEST_TOKEN</user_auth_token><action>getversion</action></api>",
+  "result": {
+    "status": "success"
+  }
 }

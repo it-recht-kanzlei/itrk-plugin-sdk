@@ -2,6 +2,7 @@
 /*
  * Please do NOT edit this class to ensure that the code remains executable.
  */
+
 namespace ITRechtKanzlei;
 
 use SimpleXMLElement;

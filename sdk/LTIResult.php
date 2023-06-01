@@ -2,6 +2,7 @@
 /*
  * Please do NOT edit this class to ensure that the code remains executable.
  */
+
 namespace ITRechtKanzlei;
 
 use SimpleXMLElement;
@@ -19,10 +20,10 @@ class LTIResult {
         return $this;
     }
 
-    protected final static function sanitizeTagName($tagName) {
+    protected final static function sanitizeTagName(string $tagName): string {
         $tagName = preg_replace('/_{3,}/', '__', preg_replace('/[^a-zA-Z0-9_-]/', '__', $tagName));
         if (preg_match('/^([0-9-]|xml)/i', $tagName)) {
-            $tagName = '_'.$tagName;
+            $tagName = '_' . $tagName;
         }
         return $tagName;
     }
@@ -37,7 +38,7 @@ class LTIResult {
         return true;
     }
 
-    protected final function buildNode(SimpleXMLElement $node, string $key, $data) {
+    protected final function buildNode(SimpleXMLElement $node, string $key, $data): void {
         $key = self::sanitizeTagName($key);
         if (is_object($data) && method_exists($data, '__toString')) {
             $data = $data->__toString();

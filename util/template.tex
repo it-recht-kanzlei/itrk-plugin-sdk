@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{babel}
+
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\pagestyle{fancy}
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=4cm]{geometry}
+
+\usepackage{listings}
+
+\fancyhf{}
+\setlength{\headheight}{2cm}
+\fancyhead[L]{\includegraphics[height=1.5cm]{Logo}}
+\fancyfoot[L]{\today}
+\fancyfoot[C]{Copyright © IT-Recht Kanzlei}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\lstset{basicstyle=\small\ttfamily, basewidth=0.5em}
+\lstset{breaklines=true}
+\lstset{backgroundcolor=\color{black!10}}
+\lstset{
+    framexleftmargin=5pt,
+    xleftmargin=5pt,
+}
+\begin{document}
+
+    $body$
+
+\end{document}

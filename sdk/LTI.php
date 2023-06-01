@@ -2,6 +2,7 @@
 /*
  * Please do NOT edit this class to ensure that the code remains executable.
  */
+
 namespace ITRechtKanzlei;
 
 use Exception;
@@ -11,7 +12,7 @@ require_once __DIR__ . '/LTIHandler.php';
 require_once __DIR__ . '/LTIResult.php';
 
 class LTI {
-    const SDK_VERSION = '1.2.1';
+    const SDK_VERSION = '1.2.2';
 
     private $ltiHandler;
     private $shopVersion;
@@ -101,16 +102,19 @@ class LTI {
         }
     }
 
-    private function checkXmlElementAvailable(string $name, int $errorCode = LTIError::UNKNOWN_ERROR) {
+    /**
+     * @throws Exception
+     */
+    private function checkXmlElementAvailable(string $name, int $errorCode = LTIError::UNKNOWN_ERROR): void {
         try {
             $value = $this->xmlData->$name;
 
             if (empty($value)) {
-                throw new \Exception('XML element '. $name . '\'s value is empty!', $errorCode);
+                throw new \Exception('XML element ' . $name . '\'s value is empty!', $errorCode);
             }
 
         } catch (Exception $e) {
-            throw new \Exception('XML element '. $name . ' not set!', $errorCode);
+            throw new \Exception('XML element ' . $name . ' not set!', $errorCode);
         }
     }
 }

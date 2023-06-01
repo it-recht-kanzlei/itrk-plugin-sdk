@@ -1,4 +1,5 @@
 <?php
+
 namespace PluginSDKTestSuite;
 
 class ColorCodes {

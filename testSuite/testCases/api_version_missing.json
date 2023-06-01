@@ -1,0 +1,8 @@
+{
+    "name": "Api version missing",
+    "data" : "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><user_auth_token>TEST_TOKEN</user_auth_token><action>getversion</action></api>",
+    "result": {
+        "status": "error",
+        "error": "1"
+    }
+}

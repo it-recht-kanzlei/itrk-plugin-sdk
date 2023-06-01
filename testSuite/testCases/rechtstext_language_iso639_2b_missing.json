@@ -1,0 +1,8 @@
+{
+    "name": "Rechtstext language iso639_2b missing",
+    "data" : "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>Datenschutzerklärung.pdf</rechtstext_pdf_filenamebase_suggestion><user_auth_token>TEST_TOKEN</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>",
+    "result": {
+        "status": "error",
+        "error": "9"
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "client": "Thunder Client",
+  "environmentName": "ITRK-Plugin-SDK",
+  "dateExported": "2023-06-12T14:50:00.674Z",
+  "version": "1.0",
+  "variables": [
+    {
+      "name": "url",
+      "value": "https://www.example.com/ITRK-plugin-sdk/example.php"
+    },
+    {
+      "name": "user_auth_token",
+      "value": "12345678"
+    },
+    {
+      "name": "user_account_id",
+      "value": "1"
+    }
+  ]
+}

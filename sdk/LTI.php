@@ -7,12 +7,8 @@ namespace ITRechtKanzlei;
 
 use Exception;
 
-require_once __DIR__ . '/LTIError.php';
-require_once __DIR__ . '/LTIHandler.php';
-require_once __DIR__ . '/LTIResult.php';
-
 class LTI {
-    const SDK_VERSION = '1.2.2';
+    const SDK_VERSION = '1.2.3';
 
     private $ltiHandler;
     private $shopVersion;
@@ -54,8 +50,16 @@ class LTI {
             $this->checkXmlElementAvailable('api_version', LTIError::INVALID_API_VERSION);
             $this->checkXmlElementAvailable('user_auth_token');
 
-            if (!$this->ltiHandler->isTokenValid($this->xmlData->user_auth_token)) {
-                throw new \Exception('Invalid user auth token!', LTIError::INVALID_AUTH_TOKEN);
+            if (isset($this->xmlData->user_auth_token) && strval($this->xmlData->user_auth_token)) {
+                // validate token
+                if (!$this->ltiHandler->isTokenValid($this->xmlData->user_auth_token)) {
+                    throw new \Exception('Invalid user auth token!', LTIError::INVALID_AUTH_TOKEN);
+                }
+            } else {
+                // validate user/pass
+                if (!$this->ltiHandler->validateUserPass($this->xmlData->user_username, $this->xmlData->user_password)) {
+                    throw new \Exception('Invalid user/pass!', LTIError::INVALID_AUTH_TOKEN);
+                }
             }
 
             $this->checkXmlElementAvailable('action', LTIError::INVALID_ACTION);
@@ -64,12 +68,10 @@ class LTI {
             switch ($this->xmlData->action) {
                 case 'push':
                     if (!$this->isMultiShop) {
-                        require_once __DIR__ . '/LTIPushData.php';
                         $ltiResult = $this->ltiHandler->handleActionPush(
                             new \ITRechtKanzlei\LTIPushData($this->xmlData)
                         );
                     } else {
-                        require_once __DIR__ . '/LTIMultiShopPushData.php';
                         $ltiResult = $this->ltiHandler->handleActionPush(
                             new \ITRechtKanzlei\LTIMultiShopPushData($this->xmlData)
                         );
@@ -90,14 +92,11 @@ class LTI {
             }
 
             $ltiResult->setVersions($this->shopVersion, $this->modulVersion);
-            $this->ltiHandler->sendResponse($ltiResult);
             return $ltiResult;
 
         } catch (\Exception $e) {
-            require_once __DIR__ . '/LTIErrorResult.php';
             $error = new \ITRechtKanzlei\LTIErrorResult($e);
             $error->setVersions($this->shopVersion, $this->modulVersion);
-            $this->ltiHandler->sendResponse($error);
             return $error;
         }
     }

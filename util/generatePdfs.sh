@@ -8,3 +8,7 @@ pandoc ../README.md \
 pandoc ../testSuite/README.md \
     -o ../testSuite/README.pdf \
     --listings --template=template.tex
+
+pandoc "../Thunder Client/README.md" \
+    -o "../Thunder Client/README.pdf" \
+    --listings --template=template.tex

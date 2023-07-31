@@ -4,15 +4,17 @@ namespace PluginSDKTestSuite;
 include_once __DIR__ . '/ColorCodes.php';
 
 class UnitTest {
+    protected $userAccountId = null;
     private $apiUrl = null;
     private $apiToken = null;
     private $multishop = null;
     private $testsStatus = true;
 
-    public function __construct($apiUrl, $apiToken, $multishop) {
+    public function __construct($apiUrl, $apiToken, $multishop, $userAccountId=null) {
         $this->apiUrl = $apiUrl;
         $this->apiToken = $apiToken;
         $this->multishop = $multishop;
+        $this->userAccountId = $userAccountId;
     }
 
     public function runTest($testName): void {
@@ -25,8 +27,13 @@ class UnitTest {
         }
 
         if ($this->apiToken) {
-            $jsonContent->data = str_replace('TEST_TOKEN', $this->apiToken, $jsonContent->data);
+            $jsonContent->data = str_replace('<user_auth_token>TEST_TOKEN</user_auth_token>', '<user_auth_token>' . $this->apiToken . '</user_auth_token>', $jsonContent->data);
         }
+
+        if ($this->userAccountId) {
+            $jsonContent->data = str_replace('<user_account_id>123</user_account_id>', '<user_account_id>' . $this->userAccountId . '</user_account_id>', $jsonContent->data);
+        }
+
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->apiUrl);
@@ -56,7 +63,7 @@ class UnitTest {
                     || ($jsonContent->result->status != 'error')
                 )
             ) {
-                $msg = sprintf("Test '%s' successfull!", $jsonContent->name);
+                $msg = sprintf("Test '%s' successful!", $jsonContent->name);
                 self::writeWithColor(ColorCodes::GREEN, $msg);
             } else {
                 $msg = sprintf("Test '%s' failed!", $jsonContent->name);

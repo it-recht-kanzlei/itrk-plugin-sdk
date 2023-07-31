@@ -10,6 +10,7 @@ $available_long_options = [
     'api-token::',
     'api-url::',
     'test-name::',
+    'user-account-id::',
 ];
 $args = getopt($available_short_options, $available_long_options);
 
@@ -41,10 +42,11 @@ if (!isset($args['multishop'])) {
 }
 
 $multishop = $args['multishop'] == 'true';
+$userAccountId = $args['user-account-id'] ?? null;
 $apiUrl = $args['api-url'] ?? "http://localhost:7080/UnitTestEndpoint.php";
 $apiToken = $args['api-token'] ?? null;
 
-$unitTest = new UnitTest($apiUrl, $apiToken, $multishop);
+$unitTest = new UnitTest($apiUrl, $apiToken, $multishop, $userAccountId);
 
 if (!isset($args['test-name'])) {
     foreach (glob(__DIR__ . '/../testCases/*.json') as $fileName) {

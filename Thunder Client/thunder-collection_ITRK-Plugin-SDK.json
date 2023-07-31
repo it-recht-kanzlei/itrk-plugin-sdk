@@ -1,0 +1,1006 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ITRK-Plugin-SDK",
+    "dateExported": "2023-06-12T14:50:28.420Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "9a8cd057-4def-4388-a892-e3848134f9a2",
+            "name": "For Singleshop Only",
+            "containerId": "",
+            "created": "2023-06-12T14:18:06.163Z",
+            "sortNum": 15000
+        },
+        {
+            "_id": "d0ced495-1591-44c1-a30f-73103ed0897a",
+            "name": "For Multishop Only",
+            "containerId": "",
+            "created": "2023-06-12T14:18:06.164Z",
+            "sortNum": 17500
+        },
+        {
+            "_id": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "General",
+            "containerId": "",
+            "created": "2023-06-12T14:18:06.165Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "47abc69a-3097-4d10-864e-4b73e6dc7b14",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "d0ced495-1591-44c1-a30f-73103ed0897a",
+            "name": "Get Account List",
+            "url": "",
+            "method": "POST",
+            "sortNum": 2500,
+            "created": "2023-06-12T14:18:06.163Z",
+            "modified": "2023-06-12T14:22:26.338Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <api> <api_version>1.0</api_version> <user_auth_token>{{user_auth_token}}</user_auth_token> <action>getaccountlist</action> </api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "success"
+                }
+            ],
+            "docs": "This test will always fail, if you're testing a singleshop-Endpoint"
+        },
+        {
+            "_id": "859437c3-18c4-4a98-801a-bca340812a4b",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "d0ced495-1591-44c1-a30f-73103ed0897a",
+            "name": "User account id missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 5000,
+            "created": "2023-06-12T14:18:06.164Z",
+            "modified": "2023-06-12T14:22:31.593Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "11"
+                }
+            ],
+            "docs": "This test will always fail, if you're testing a singleshop-Endpoint"
+        },
+        {
+            "_id": "768d73a9-5fa3-4ad4-a982-e7094710217d",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "9a8cd057-4def-4388-a892-e3848134f9a2",
+            "name": "Get Account List",
+            "url": "",
+            "method": "POST",
+            "sortNum": 5000,
+            "created": "2023-06-12T14:18:06.165Z",
+            "modified": "2023-06-12T14:22:45.514Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?> <api> <api_version>1.0</api_version> <user_auth_token>{{user_auth_token}}</user_auth_token> <action>getaccountlist</action> </api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "13"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                }
+            ],
+            "docs": "This test will always fail, if you're testing a multishop-Endpoint"
+        },
+        {
+            "_id": "e91f99ff-c13a-4f25-9156-7e1e4b806874",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Action invalid",
+            "url": "",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-06-12T14:18:06.166Z",
+            "modified": "2023-06-12T14:18:06.166Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>pushh</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "10"
+                },
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "0d47a422-60b6-4aa9-8437-8e1c249a5e9c",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "9a8cd057-4def-4388-a892-e3848134f9a2",
+            "name": "No multishop error",
+            "url": "",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-06-12T14:18:06.167Z",
+            "modified": "2023-06-12T14:22:42.109Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>getaccountlist</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "13"
+                }
+            ],
+            "docs": "This test will always fail, if you're testing a multishop-Endpoint"
+        },
+        {
+            "_id": "47929c7f-4ed2-498f-8eec-f5575b02b989",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Api version missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-06-12T14:18:06.168Z",
+            "modified": "2023-06-12T14:18:06.168Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><user_auth_token>{{user_auth_token}}</user_auth_token><action>getversion</action></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "_id": "e8da7ce5-a406-4bc8-8e74-8a444ac565d1",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "No xml data",
+            "url": "",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-06-12T14:18:06.169Z",
+            "modified": "2023-06-12T14:18:06.169Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": ""
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "12"
+                }
+            ]
+        },
+        {
+            "_id": "06d7062c-1c47-4bbb-b8cc-77f6db03386a",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Parsing xml failed",
+            "url": "",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-06-12T14:18:06.170Z",
+            "modified": "2023-06-12T14:18:06.170Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "No xml data"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "12"
+                }
+            ]
+        },
+        {
+            "_id": "faa9e62e-e95c-48c4-beed-47c0682afdd5",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Push invalid pdf not parsable",
+            "url": "",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-06-12T14:18:06.171Z",
+            "modified": "2023-06-12T14:18:06.171Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>WRONG_PDF</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><user_account_id>{{user_account_id}}</user_account_id><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "7"
+                }
+            ]
+        },
+        {
+            "_id": "69cafb98-c9a3-4fb1-8611-cd5ea3d44762",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Push valid",
+            "url": "",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2023-06-12T14:18:06.172Z",
+            "modified": "2023-06-12T14:18:06.172Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERi0xLjMKMyAwIG9iago8PC9UeXBlIC9QYWdlCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyAyIDAgUgovQ29udGVudHMgNCAwIFI+PgplbmRvYmoKNCAwIG9iago8PC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMzI2Pj4Kc3RyZWFtCnictZJBTsMwEEX3nOIvQaKOnTRJwxIVJGAF9QWSZkpMg1NsV0GcnQVOCG2DhFQJ2Izk8cz/b8YOcXvCWZyiPbmUCK4FBGecQ65wJXepZJ96AWdZFPk4nSXoajnMI3xlGrGUI00yxhPIEqeSrCub9faZtDuDfPLtuN9pirGmyJJRHGlOvU/Wa85zC2UdSOm95M/9IowZjw8F8I0kPJJEhDMmxKHSH4wX8oiFsxHe6t2gVIQHWlbOOnp1hMWy0sp1p7omlGRwIyd9Ae5y/VaTYr/br4hZ9um/aOrakcbCI3gMSxbzYUaQqfL+ssoLH3M9APm38GUHwPYcLelykLFqWR3zVgML9z+L9yyFn5m8DXolUt66IGdIFX4DTbeGr7vtZtMY9w+bSdKERaKnqZzb2IsgaNuWKTcxnclkPZiUFOx9PgCA7OEtCmVuZHN0cmVhbQplbmRvYmoKMSAwIG9iago8PC9UeXBlIC9QYWdlcwovS2lkcyBbMyAwIFIgXQovQ291bnQgMQovTWVkaWFCb3ggWzAgMCA1OTUuMjggODQxLjg5XQo+PgplbmRvYmoKNSAwIG9iago8PC9UeXBlIC9Gb250Ci9CYXNlRm9udCAvSGVsdmV0aWNhCi9TdWJ0eXBlIC9UeXBlMQovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwo+PgplbmRvYmoKNiAwIG9iago8PC9UeXBlIC9Gb250Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQKL1N1YnR5cGUgL1R5cGUxCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCj4+CmVuZG9iagoyIDAgb2JqCjw8Ci9Qcm9jU2V0IFsvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJXQovRm9udCA8PAovRjEgNSAwIFIKL0YyIDYgMCBSCj4+Ci9YT2JqZWN0IDw8Cj4+Cj4+CmVuZG9iago3IDAgb2JqCjw8Ci9Qcm9kdWNlciAodEZQREYgMS4yNCkKPj4KZW5kb2JqCjggMCBvYmoKPDwKL1R5cGUgL0NhdGFsb2cKL1BhZ2VzIDEgMCBSCj4+CmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDA0ODMgMDAwMDAgbiAKMDAwMDAwMDc2NyAwMDAwMCBuIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDAwODcgMDAwMDAgbiAKMDAwMDAwMDU3MCAwMDAwMCBuIAowMDAwMDAwNjY2IDAwMDAwIG4gCjAwMDAwMDA4ODEgMDAwMDAgbiAKMDAwMDAwMDkyNSAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDkKL1Jvb3QgOCAwIFIKL0luZm8gNyAwIFIKPj4Kc3RhcnR4cmVmCjk3NAolJUVPRgo=</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><user_account_id>{{user_account_id}}</user_account_id><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "success"
+                }
+            ]
+        },
+        {
+            "_id": "04157973-91de-46b2-bd49-b1c0085da887",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Push valid impressum (no file name suggestion added)",
+            "url": "",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-06-12T14:18:06.173Z",
+            "modified": "2023-06-12T14:18:06.173Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>impressum</rechtstext_type><rechtstext_pdf>JVBERi0xLjMKMyAwIG9iago8PC9UeXBlIC9QYWdlCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyAyIDAgUgovQ29udGVudHMgNCAwIFI+PgplbmRvYmoKNCAwIG9iago8PC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMzI2Pj4Kc3RyZWFtCnictZJBTsMwEEX3nOIvQaKOnTRJwxIVJGAF9QWSZkpMg1NsV0GcnQVOCG2DhFQJ2Izk8cz/b8YOcXvCWZyiPbmUCK4FBGecQ65wJXepZJ96AWdZFPk4nSXoajnMI3xlGrGUI00yxhPIEqeSrCub9faZtDuDfPLtuN9pirGmyJJRHGlOvU/Wa85zC2UdSOm95M/9IowZjw8F8I0kPJJEhDMmxKHSH4wX8oiFsxHe6t2gVIQHWlbOOnp1hMWy0sp1p7omlGRwIyd9Ae5y/VaTYr/br4hZ9um/aOrakcbCI3gMSxbzYUaQqfL+ssoLH3M9APm38GUHwPYcLelykLFqWR3zVgML9z+L9yyFn5m8DXolUt66IGdIFX4DTbeGr7vtZtMY9w+bSdKERaKnqZzb2IsgaNuWKTcxnclkPZiUFOx9PgCA7OEtCmVuZHN0cmVhbQplbmRvYmoKMSAwIG9iago8PC9UeXBlIC9QYWdlcwovS2lkcyBbMyAwIFIgXQovQ291bnQgMQovTWVkaWFCb3ggWzAgMCA1OTUuMjggODQxLjg5XQo+PgplbmRvYmoKNSAwIG9iago8PC9UeXBlIC9Gb250Ci9CYXNlRm9udCAvSGVsdmV0aWNhCi9TdWJ0eXBlIC9UeXBlMQovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwo+PgplbmRvYmoKNiAwIG9iago8PC9UeXBlIC9Gb250Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQKL1N1YnR5cGUgL1R5cGUxCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCj4+CmVuZG9iagoyIDAgb2JqCjw8Ci9Qcm9jU2V0IFsvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJXQovRm9udCA8PAovRjEgNSAwIFIKL0YyIDYgMCBSCj4+Ci9YT2JqZWN0IDw8Cj4+Cj4+CmVuZG9iago3IDAgb2JqCjw8Ci9Qcm9kdWNlciAodEZQREYgMS4yNCkKPj4KZW5kb2JqCjggMCBvYmoKPDwKL1R5cGUgL0NhdGFsb2cKL1BhZ2VzIDEgMCBSCj4+CmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDA0ODMgMDAwMDAgbiAKMDAwMDAwMDc2NyAwMDAwMCBuIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDAwODcgMDAwMDAgbiAKMDAwMDAwMDU3MCAwMDAwMCBuIAowMDAwMDAwNjY2IDAwMDAwIG4gCjAwMDAwMDA4ODEgMDAwMDAgbiAKMDAwMDAwMDkyNSAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDkKL1Jvb3QgOCAwIFIKL0luZm8gNyAwIFIKPj4Kc3RhcnR4cmVmCjk3NAolJUVPRgo=</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><user_account_id>{{user_account_id}}</user_account_id><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "success"
+                }
+            ]
+        },
+        {
+            "_id": "9258a4a6-9315-40f8-be29-cab391552c18",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Rechtstext country missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2023-06-12T14:18:06.174Z",
+            "modified": "2023-06-12T14:18:06.174Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "17"
+                }
+            ]
+        },
+        {
+            "_id": "d5eb8193-2dc9-4285-98c6-b9192476dd5d",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Rechtstext html missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 90000,
+            "created": "2023-06-12T14:18:06.175Z",
+            "modified": "2023-06-12T14:18:06.175Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "6"
+                }
+            ]
+        },
+        {
+            "_id": "f3e42479-0ec2-49a4-ac75-7c8b29cc2513",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Rechtstext language iso639_2b missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 100000,
+            "created": "2023-06-12T14:18:06.176Z",
+            "modified": "2023-06-12T14:18:06.176Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "9"
+                }
+            ]
+        },
+        {
+            "_id": "4071ea9a-fbfb-4ed2-870e-c95f4344c5d5",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Rechtstext language missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2023-06-12T14:18:06.177Z",
+            "modified": "2023-06-12T14:18:06.177Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "9"
+                }
+            ]
+        },
+        {
+            "_id": "eca5a68f-da85-48da-990f-30b3d2d39f6b",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Filename suggestion missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2023-06-12T14:18:06.178Z",
+            "modified": "2023-06-12T14:18:06.178Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><user_account_id>{{user_account_id}}</user_account_id><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "8"
+                }
+            ]
+        },
+        {
+            "_id": "7b5eae6b-2b79-4042-bc25-1ef7b763b5b3",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Rechtstext pdf missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 130000,
+            "created": "2023-06-12T14:18:06.179Z",
+            "modified": "2023-06-12T14:18:06.179Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "7"
+                }
+            ]
+        },
+        {
+            "_id": "f50cc6dd-ca99-4f18-95be-3443188de116",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Rechtstext text missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 140000,
+            "created": "2023-06-12T14:18:06.180Z",
+            "modified": "2023-06-12T14:18:06.180Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "5"
+                }
+            ]
+        },
+        {
+            "_id": "ca49d208-b430-4498-89ce-aac58ed4bcec",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Rechtstext title missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 150000,
+            "created": "2023-06-12T14:18:06.181Z",
+            "modified": "2023-06-12T14:18:06.181Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "18"
+                }
+            ]
+        },
+        {
+            "_id": "f38b86e9-82cd-4a37-a462-154efc75d218",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Rechtstext type missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2023-06-12T14:18:06.182Z",
+            "modified": "2023-06-12T14:18:06.182Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>{{user_auth_token}}</user_auth_token><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "4"
+                }
+            ]
+        },
+        {
+            "_id": "64ddb1b2-e757-4196-993c-a26c42bf9995",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "User auth token invalid",
+            "url": "",
+            "method": "POST",
+            "sortNum": 170000,
+            "created": "2023-06-12T14:18:06.183Z",
+            "modified": "2023-06-12T14:18:06.183Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>WRONG_TEST_TOKEN</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "3"
+                }
+            ]
+        },
+        {
+            "_id": "a74775cb-cd73-4a13-b223-1d52670cd73a",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "User auth token missing",
+            "url": "",
+            "method": "POST",
+            "sortNum": 180000,
+            "created": "2023-06-12T14:18:06.184Z",
+            "modified": "2023-06-12T14:18:06.184Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklärung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "error"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.error",
+                    "action": "equal",
+                    "value": "99"
+                }
+            ]
+        },
+        {
+            "_id": "fef8e51f-b002-471b-a6a6-29d3c5521034",
+            "colId": "8b57e7f1-b968-4111-bc0f-37e0acf6df16",
+            "containerId": "77ef906d-6fad-4189-92fe-7b9c8346f304",
+            "name": "Version valid",
+            "url": "",
+            "method": "POST",
+            "sortNum": 190000,
+            "created": "2023-06-12T14:18:06.185Z",
+            "modified": "2023-06-12T14:18:06.185Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "xml",
+                        "value": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><api><api_version>1.0</api_version><user_auth_token>{{user_auth_token}}</user_auth_token><action>getversion</action></api>"
+                    }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "json-query",
+                    "custom": "json.response.status",
+                    "action": "equal",
+                    "value": "success"
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "options": {
+            "baseUrl": "{{url}}"
+        },
+        "envId": "71066603-17ab-4f1b-9989-4bf5b7147483"
+    }
+}

@@ -19,7 +19,16 @@
  *
  * The example below shows you how to use the SDK properly.
  */
-require_once __DIR__ . "/sdk/LTI.php";
+require_once __DIR__ . '/sdk/LTI.php';
+require_once __DIR__ . '/sdk/LTIResult.php';
+require_once __DIR__ . '/sdk/LTIPushData.php';
+require_once __DIR__ . '/sdk/LTIAccountListResult.php';
+require_once __DIR__ . '/sdk/LTIError.php';
+require_once __DIR__ . '/sdk/LTIHandler.php';
+require_once __DIR__ . '/sdk/LTIMultiShopPushData.php';
+require_once __DIR__ . '/sdk/LTIPushResult.php';
+require_once __DIR__ . '/sdk/LTIVersionResult.php';
+require_once __DIR__ . '/sdk/LTIErrorResult.php';
 
 class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
     public function isTokenValid(string $token): bool {
@@ -49,10 +58,20 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
         return $result;
     }
 
+
+    /**
+     * @throws Exception
+     */
     public function handleActionPush(\ITRechtKanzlei\LTIPushData $data): \ITRechtKanzlei\LTIPushResult {
         // Implement the logic to store your pushed document to the shop here and return an object of ITRechtKanzlei\LTIPushResult with
         // an url where to find the currently uploaded document. Replace the url with your document url.
-        return new \ITRechtKanzlei\LTIPushResult('https://www.examplep.com/policies/imprint');
+
+        if ($data->hasPdf()) {
+            // implement as needed
+            $pdf_binary = $data->getPdf();
+        }
+
+        return new \ITRechtKanzlei\LTIPushResult('https://www.example.com/policies/imprint');
     }
 
     // This method only has to be created, if your system is a multishop system.
@@ -74,6 +93,10 @@ $ltiHandler = new MyLTIHandler();
 $lti = new \ITRechtKanzlei\LTI($ltiHandler, '1.2', '1.0', true /* is multishop system */);
 
 // 3. Handle the request.
-$lti->handleRequest($_POST['xml']);
+$responseResult = $lti->handleRequest($_POST['xml']);
+
+header('Content-Type: application/xml; charset=utf-8');
+header('Content-Length: ' . strlen($responseResult));
+echo $responseResult;
 
 // This should be the end of your plugin code

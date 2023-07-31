@@ -5,19 +5,8 @@
 
 namespace ITRechtKanzlei;
 
-require_once __DIR__ . '/LTIPushData.php';
-require_once __DIR__ . '/LTIResult.php';
-require_once __DIR__ . '/LTIAccountListResult.php';
-require_once __DIR__ . '/LTIPushResult.php';
-require_once __DIR__ . '/LTIVersionResult.php';
 
 abstract class LTIHandler {
-    public function sendResponse(string $responseResult): void {
-        header('Content-Type: application/xml; charset=utf-8');
-        header('Content-Length: ' . strlen($responseResult));
-        echo $responseResult;
-    }
-
     /**
      * This method can be overwritten by you if you wish to extend the response
      * with useful debugging information. See LTIVersionResult for more details.
@@ -45,7 +34,11 @@ abstract class LTIHandler {
      * This method is only used when ITRechtKanzlei/LTI->isMultiShop is true.
      */
     public function handleActionGetAccountList(): \ITRechtKanzlei\LTIAccountListResult {
-        throw new \RuntimeException('Please implement this method in %s.', get_class($this));
+        throw new \RuntimeException(sprintf('Please implement this method in %s.', get_class($this)));
+    }
+
+    public function validateUserPass(string $username, string $password): bool {
+        return false;
     }
 
 }

@@ -3,7 +3,17 @@
 namespace PluginSDKTestSuite;
 
 $postData = $_POST;
-require_once __DIR__ . "/../../sdk/LTI.php";
+
+require_once __DIR__ . '/../../sdk/LTI.php';
+require_once __DIR__ . '/../../sdk/LTIResult.php';
+require_once __DIR__ . '/../../sdk/LTIPushData.php';
+require_once __DIR__ . '/../../sdk/LTIAccountListResult.php';
+require_once __DIR__ . '/../../sdk/LTIError.php';
+require_once __DIR__ . '/../../sdk/LTIHandler.php';
+require_once __DIR__ . '/../../sdk/LTIMultiShopPushData.php';
+require_once __DIR__ . '/../../sdk/LTIPushResult.php';
+require_once __DIR__ . '/../../sdk/LTIVersionResult.php';
+require_once __DIR__ . '/../../sdk/LTIErrorResult.php';
 
 class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
     public function isTokenValid(string $token): bool {
@@ -33,4 +43,8 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
 $ltiHandler = new MyLTIHandler();
 $multishop = strtolower(getenv('MULTISHOP')) === "true";
 $lti = new \ITRechtKanzlei\LTI($ltiHandler, '1.2', '1.0', $multishop);
-$lti->handleRequest(@$postData['xml']);
+$responseResult = $lti->handleRequest(@$postData['xml']);
+
+header('Content-Type: application/xml; charset=utf-8');
+header('Content-Length: ' . strlen($responseResult));
+echo $responseResult;

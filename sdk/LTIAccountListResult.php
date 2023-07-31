@@ -7,7 +7,6 @@ namespace ITRechtKanzlei;
 
 use SimpleXMLElement;
 
-require_once __DIR__ . '/LTIResult.php';
 
 class LTIAccountListResult extends \ITRechtKanzlei\LTIResult {
 

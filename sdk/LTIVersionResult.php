@@ -7,7 +7,6 @@ namespace ITRechtKanzlei;
 
 use SimpleXMLElement;
 
-
 /**
  * The response class for the GetVersion call.
  *

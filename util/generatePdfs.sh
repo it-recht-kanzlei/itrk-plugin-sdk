@@ -1,14 +1,18 @@
 #!/bin/bash
-# apt-get install pandoc texlive-latex-recommended
+# apt-get install pandoc texlive-latex-recommended lmodern texlive-lang-german
 
-pandoc ../README.md \
-    -o ../README.pdf \
-    --listings --template=template.tex
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-pandoc ../testSuite/README.md \
-    -o ../testSuite/README.pdf \
-    --listings --template=template.tex
+cd "$SCRIPT_DIR/.."
 
-pandoc "../Thunder Client/README.md" \
-    -o "../Thunder Client/README.pdf" \
-    --listings --template=template.tex
+find . -name "*.md" -print0 | while read -d $'\0' file
+do
+    echo "Processing " "$file"
+
+    pandoc "$file" \
+        -o "${file%.md}.pdf" \
+        -s \
+        --listings \
+        --lua-filter="$SCRIPT_DIR/promote-headers.lua" \
+        --template="$SCRIPT_DIR/template.tex"
+done

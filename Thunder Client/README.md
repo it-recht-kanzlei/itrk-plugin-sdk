@@ -1,16 +1,16 @@
-# Testen mit Thunder Client
+# Testing with Thunder Client
 
 **Thunder Client:**
 [https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client)
 
-- Collection Importieren
-- Env Importieren
+- Import Collection
+- Import Environment
 
-Passen Sie die im Environment gesetzten Werte entsprechend an.
-Wählen Sie in den Settings der Collection bei Environment das importierte "ITRK-Plugin-SDK"-Environment aus.
+Adjust the values set in the environment accordingly.
+Select the imported "ITRK-Plugin-SDK" environment under Environment in the collection settings.
 
-Anschließend können die Tests gestartet werden.
+The tests can then be started.
 
-Die Tests im Ordner 'For Singleshop Only' bzw. 'For Multishop Only' sind jeweils nur für Single- bzw. Multi-Shops
-relevant.
-Diese werden im jeweils anderen Fall fehlschlagen.
+The tests in the 'For Singleshop Only' and 'For Multishop Only' folders are only
+relevant for single and multi-shops respectively.
+They will fail in the other case.

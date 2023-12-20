@@ -68,7 +68,7 @@ class LTIResult {
     }
 
     protected function buildXML(): SimpleXMLElement {
-        $simpleXml = new simpleXMLElement('<response></response>');
+        $simpleXml = new SimpleXMLElement('<response></response>');
         $simpleXml->addChild('status', 'success');
         $simpleXml->addChild('meta_shopversion', $this->shopVersion);
         $simpleXml->addChild('meta_phpversion', phpversion());

@@ -1,288 +1,300 @@
-# Schnittstellen-Spezifikation zur Übertragung von Rechtstexten der IT-Recht Kanzlei München zu Ihren Systemen
+# Interface specification for the transfer of legal texts from IT-Recht Kanzlei München to your system
 
-Daten werden per POST im XML-Format an Ihre Schnittstelle gepusht. Als Encoding ist
-UTF-8 vorgesehen. Der POST-Parameter lautet standardmäßig "xml" ($_POST['xml']), andere
-Vereinbarungen sind möglich.
+Data is pushed to your interface via POST in XML format. The document is UTF-8 encoded. 
+The POST parameter is "xml" by default (`$_POST['xml']`), other agreements are possible.
 
-## Implementierung PHP-SDK
+## Implementation and use of the PHP SDK
 
-Für die Nutzer unserer IT-Recht Kanzlei Schnittstelle mit PHP Backend bieten wir ein SDK an. Das SDK ist sehr
-übersichtlich gestaltet und leicht zu verwenden. Zunächst müssen die drei abstrakten Methoden der Klasse **LTIHandler**
-überschrieben werden.
+We offer a PHP SDK for users of our IT law firm interface. The SDK is designed for easy use.
+First, the two abstract methods of the class **LTIHandler** class and one of the
+two authentication methods must be overwritten.
 
-**isTokenValid(string $token)**
+### Creation of your own LTI handler
 
-Hier muss die Korrektheit des übermittelten Tokens geprüft werden. Damit können Sie sicherstellen, dass die übertragenen
-Daten von der IT-Recht Kanzlei stammen.
-Der Token wird von Ihnen bzw. Ihrem Shopsystem generiert und in der Konfiguration der Schnittstelle im Mandantenportal
-der IT-Recht Kanzlei hinterlegt.
+#### Authentication methods
 
-**handleActionPush(LTIPushData $data)**
+To ensure that the transfer of the legal texts originates from the 
+IT-Recht Kanzlei system, you can implement one of the following two methods.
 
-Nachdem der Request am Plugin angekommen ist, muss das Dokument in die
-entsprechende Zielseite integriert werden. Die Integration des Dokuments wird
-hier vorgenommen. Das Objekt **$data** besitzt Getter-Methoden für alle wichtigen
-Informationen bezüglich des Dokuments die so abgefragt und anschließend
-weiterverarbeitet werden können.
+##### isTokenValid(string $token): bool
 
-**handleActionGetAccountList()**
+The validity of the transmitted token must be checked here if the system should work with a token.
+The token is generated manually by you or automatically by your system and stored
+in the client portal of IT-Recht Kanzlei during configuration of the interface
+by the user of the interface.This is the preferred authentication method.
 
-Handelt es sich beim Zielsystem um ein Multishop-System, kann über diese Funktion eine Liste
-aller im Zielsystem vorhandenen Shops abgerufen werden. Um diese Methode
-nutzen zu können, muss beim Erzeugen des Objekts der LTI-Klasse der
-letzte Parameter (**$isMultiShop**) unbedingt auf true gesetzt werden. Andernfalls wird ein Fehler
-zurückgegeben, der besagt, dass das System kein Multishop-System ist.
+##### validateUserPass(string $username, string $password): bool
 
-Anschließend muss ein Objekt der LTI-Klasse des SDKs erzeugt werde. Der Konstruktor
-benötigt vier Parameter.
+The correctness of a transmitted user name and password must be checked here.
+The user name and password can be assigned by the users themselves in your plugin
+or can be created by your plugin. The user name and password must then be stored
+in the client portal when setting up the interface.
 
-1. Eine Instanz der überschriebenen LTIHandler-Klasse
-2. Die Version des Shops, der mit diesem Plugin angesprochen wird
-3. Die Version des Plugins in dem das SDK verwendet wird
-4. Ein Boolean der angibt, ob das Zielsystem ein Multishop-System ist oder nicht
+#### handleActionGetAccountList(): LTIAccountListResult
 
-Als letzter Schritt muss die **handleRequest**-Methode des Objekts der LTI-Klasse aufgerufen
-werden. Hierzu kann $_POST['xml'] direkt als Parameter genutzt werden.
+This function should return a list of all sales channels in your system.
+An ID (`accountid`) and the name (`accountname`) must be specified for each
+sales channel. In addition, a list of available target languages can be
+transferred for each sales channel.
 
-Das SDK beinhaltet eine LTI.php Datei, in welcher die LTI-Klasse implementiert ist. Diese
-übernimmt die Koordination der eingehen Post-Daten, wertet die auszuführende
-Aktion aus und führt einen Großteil der Fehlerbehandlung durch. Außerdem inkludiert sie alle
-weiteren im SDK enthaltenen und benötigten Dateien. Um die Lauffähigkeit des SDKs zu
-gewährleisten, sollte diese Datei nicht geändert werden.
+Even if your system is not a multishop system, it is recommended to implement
+this function to announce the supported target languages of your system. For
+this use case, only one sales channel needs to be specified where the ID is
+specified as `0`. The account name can remain empty.
 
-Sowohl Fehlerbehandlung innerhalb des SDKs, als auch das Senden der Response zum IT-Recht Kanzlei Server werden vom SDK
-automatisch behandelt. Der Entwickler kann diese
-Aspekte ignorieren.
-
-Eine Beispielimplementierung des SDKs ist in der mitgelieferten Datei example.php enthalten.
-
-### Allgemeines
-
-**Versionierung**
-
-Voraussetzungen für die Verarbeitung der Versionsnummern durch das Mandantenportal der
-IT-Kanzlei:
-
-* **meta_modulversion**: Vergeben Sie für Ihr Modul bei Erstersterstellung und bei jedem
-  folgenden Update hochzählende Versionsnummern, die Sie in diesem XML-Element
-  übermitteln.
-* **meta_shopversion**: Hier wenn möglich ebenfalls eine durch
-  Vergleichsoperatoren vergleichbare Shop versionsnummer übermitteln (z.B. "2.0" statt
-  "GX2" - andernfalls nach Absprache). Teilen Sie uns bitte die Struktur Ihrer
-  Versionierung mit (z.B. "major.minor"), damit wir diese intern korrekt verarbeiten können.
-
-**Multishop-Systeme**
-
-Falls es sich bei Ihrem System um ein sogenanntes Multishop-System handelt, d.h. unter einem
-user_auth_token mehrere Shops/Dienste existieren, ist es erforderlich, dass dem User auf der
-IT-Recht Kanzlei - Seite zunächst ein Dialog gezeigt wird, in welchem er auswählt, in welche
-Shops/Dienste der neue Rechtstext gepusht werden soll.
-
-Dazu muss auf Ihrer Seite der Schnittstelle zusätzlich die Funktion handleActionGetAccountList()
-implementiert werden, welche zunächst einen Abruf der Shops/Dienste ermöglicht und im
-Ergebnis eine Liste im XML-Format liefert.
-
-Wichtig: Bitte achten Sie bei den Shopnamen (accountname) darauf, dass diese 5 XML-Sonderzeichen durch entsprechende
-Entities ersetzt werden:
+Important: Please ensure that these 5 special XML characters are replaced by
+corresponding entities in the names of the sales channels (`accountname`):
 
 ```
-
 & => &amp;
 < => &lt;
 > => &gt;
 " => &quot;
 ' => &apos;
-
 ```
 
-Beim anschließenden "push" wird bei Multishop-Systemen die vom User
-ausgewählte accountid im XML-Element "user_account_id" mit übermittelt.
+#### handleActionPush(LTIPushData $data): LTIPushResult
+
+Once the request has been received by the plugin, the document must be
+integrated into the corresponding target page. The document is processed here.
+The `LTIPushData` object has getter methods for all properties of the document
+that can be queried and subsequently processed.
+
+### Use of the LTI class and the LTI handler you have implemented.
+
+The class `LTI` (`LTI.php`) takes over the preprocessing of the incoming XML data,
+evaluates the action to be executed and carries out most of the error handling.
+This file should not be changed to ensure that the SDK remains fully functional.
+
+The constructor of the LTI class requires three parameters.
+
+1. An instance of your overwritten LTIHandler class
+2. The version of the system that is addressed with your implementation
+3. The version of your implementation in which the SDK is used
+
+The last step is to call the `handleRequest()` method of the LTI class object.
+For this purpose, `$_POST['xml']` can be used directly as a parameter.
+
+Both error handling within the SDK and the preparation of the response for the
+IT-Recht Kanzlei server are handled automatically by the SDK.
+The developer can ignore these aspects.
+
+An example implementation of the SDK is included in the supplied example.php file.
+
+## General
+
+### Versioning
+
+Requirements for the processing of version numbers by the client portal of IT-Recht Kanzlei:
+
+* `meta_modulversion`: Assign incrementing version numbers for your
+  implementation when you first create it and for each subsequent update.
+* `meta_shopversion`: If possible, please also transmit a system version number
+  that can be compared using comparison operators (e.g. "2.0" instead of
+  "XY2" - otherwise by request). Please let us know the structure of your
+  versioning scheme (e.g. "major.minor") so that we can process it correctly
+  internally.
+
+### Multishop systems
+
+If your system is a so-called multishop system, i.e. several sales channels/services
+exist under one administration interface, it is necessary that the user of your
+implementation is offered a list of available sales channels/services for which
+the legal texts are to be transferred in the client portal of the IT law firm.
+
+The list of sales channels is retrieved using the function `handleActionGetAccountList()`.
+
+With the subsequent "push", the `accountid` selected by the user is transmitted
+in the XML element `user_account_id` for multishop systems.
 
 ### Best Practices
 
-* Vergeben Sie für Ihr Modul bei Erstersterstellung und bei jedem folgenden Update
-  ordentliche numerische, hochzählende Versionsnummern (z.B. "1.0", "1.1", "1.2", ...).
-  Neben klassischen Versionsnummern kann hier auch numerisch das
-  Veröffentlichungsdatum genutzt werden (z.B. "20140707", Format YYYYMMDD).
-  Nennen Sie die aktuelle Versionsnummer immer in der dem Modul beiliegenden
-  Dokumentation / Installationsanleitung und mindestens in der Haupt-Programmdatei.
-* Fügen Sie Ihrem Modul-Download oder auf der Download-Seite eine gut verständliche
-  Installationsanleitung bei. Berücksichtigen Sie in Ihrer Beschreibung auch
-  Sonderfälle (z.B. für ältere Shop versionen).
-* Fügen Sie aktualisierten Modul-Versionen (Updates) eine Beschreibung für den Nutzer
-  bei, wie die Aktualisierung auf die neueste Modul-Version durchzuführen ist (diese
-  weicht oft von der klassischen Installationsanleitung ab), sofern das Update nicht
-  automatisch abläuft (z.B. durch einen Klick auf "Update" im Modul-Store des Shops).
-* Fügen Sie aktualisierten Modul-Versionen (Updates) eine changelog.txt o.ä. bei, um
-  den Nutzer über die Neuerungen zu informieren.
+* Assign proper numerical, incrementing version numbers (e.g. "1.0", "1.1", "1.2", ...)
+  for your module when it is first created and for each subsequent update. In
+  addition to classic version numbers, the release date can also be used
+  numerically here (e.g. "20230827", format YYYYMMDD). Always state the current
+  version number in the documentation / installation instructions supplied with
+  the module and at least in the main program file.
+* Include easy-to-understand installation instructions with your module download
+  or on the download page. Include special cases in your description
+  (e.g. for older store versions).
+* Include a description for the user of new versions of your implementation (updates)
+  on how to update to the latest version (this often differs from the classic
+  installation instructions), unless the update runs automatically
+  (e.g. by clicking on "Update" in the store's module store).
+* Include a changelog.txt or similar with new releases of your implementation (updates)
+  to inform the user about the new features and bug fixes.
 
 ## Testing
 
-Um Ihre Implementierung der Schnittstelle testen zu können, haben wir im Verzeichnis **testSuite** einiges
-vorbereitet.   
-Dort finden Sie auch eine weitere Readme-Datei, die Ihnen bei der Ausführung helfen soll.
+To test your implementation of the interface, please read the README.md
+in the **testSuite** directory.
 
-## Details der Implementierung innerhalb des SDK
 
-Sollten Sie das SDK nicht verwenden können oder wollen, finden Sie nachfolgend noch einige Details, die für eine eigene
-Implementierung hilfreich sein könnten.
+An additional tool you can use for testing is the
+[LTI Test Tool](https://www.it-recht-kanzlei.de/developer/sdk.php).
+There you can enter the API URL and the authentication data for your test
+system and execute requests with the legal text interface of the IT-Recht Kanzlei.
 
-### XML-Elemente, [Datentyp] und (mögliche Werte):
+## Details of the implementation within the SDK
+
+If you cannot or do not want to use the SDK, you will find some details below
+that could be helpful for your own implementation.
+
+### XML elements, [data type] and (possible values):
 
 * api_version [string]
 
-  Versionsnummer der Kommunikationsschnittstelle (z.B. "1.0")
-
----
+  Version number of the interface (e.g. "1.0")
 
 * user_auth_token [string]
 
-  Wird vom Shopsystem generiert und ist auch dort zu entnehmen. Dient der
-  Authentifizierung bei einem POST-Request.
+  Is generated by your system and can also be found there. Used for authentication.
+
+* action [string] (`push` | `getaccountlist` | `version`)
+
+  "`version`" only returns the store version, module version and PHP version installed on the system.
+  PHP version installed on the system.
+
+  "`getaccountlist`" lists all sales channels and their supported languages.
+
+  "`push`" is the command for transferring a legal text.
 
 * user_account_id [string]
 
-  wird nur für Multishop-Systeme gesetzt , wenn zuvor durch action "getaccountlist" eine
-  Shop-Liste abgerufen und vom Mandanten eine Auswahl getroffen wurde
+  is only set for multishop systems if a list of sales channels has previously
+  been retrieved using the `getaccountlist` action and a selection has been made
+  by the client.
 
 ---
 
-* rechtstext_type [string] (agb | datenschutz | widerruf | impressum)
+* rechtstext_type [string] (impressum | agb | datenschutz | widerruf )
 
-  Art des übertragenen Rechtstextes
+  Type of legal text transferred
+  - impressum = imprint
+  - agb = general terms and conditions
+  - datenschutz = privacy policy
+  - widerruf = cancellation policy
 
 * rechtstext_title [string]
 
-  Titel des übertragenen Rechtstextes in Originalsprache
+  Title of the translated legal text in the original language
 
 * rechtstext_text [text]
 
-  Text-Variante des Rechtstextes
+  Text variant of the legal text
 
 * rechtstext_pdf [text]
 
-  PDF -Variante des Rechtstextes
+  PDF version of the legal text
 
 * rechtstext_html [text]
 
-  HTML-Variante des Rechtstextes
+  HTML version of the legal text
 
 * rechtstext_country [string]
 
-  ISO 3166-1-alpha-2, Land, z.B. "DE" für Deutschland, wird uppercase übermittelt
+  ISO 3166-1-alpha-2, country, e.g. "DE" for Germany, is transmitted uppercase
 
 * rechtstext_language [string]
 
-  ISO 639-1, Sprache d. Rechtstextes, z.B. "de" für Deutsch, wird lowercase übermittelt
+  ISO 639-1, language of the legal text, e.g. "de" for German, is transmitted lowercase
 
 * rechtstext_language_iso639_2b [string]
 
-  ISO 639-2 bibliographic code (B code), Sprache d. Rechtstextes, z.B. "ger" für Deutsch,
+  ISO 639-2 bibliographic code (B code), language of the legal text, e.g. "ger" for German,
   lowercase
 
----
+### Status codes
 
-* action [string] (push | getaccountlist | version)
+* **success:** Everything went well. You confirm,
+    * that no errors occurred when querying the version
+    * that no errors occurred when querying the account list
+    * that when a legal text was pushed, it was successfully published in the user's account/shop
+* **error:** Regardless of the error code, the status of the error response will always be "error".
 
-  "push" ist der Standardbefehl für eine Übertragung. "getaccountlist" ist nur für Multishop-Systeme vorgesehen, d.h.
-  die unter einem user_auth_token mehrere Shops betreiben.
-  "version" gibt lediglich die Shop-Version, Modul-Version und auf dem System installierte
-  PHP-Version zurück.
+### Error codes
 
-### Statuscodes
+The error codes are documented in the LTIError.php file. If possible, please
+only use the error codes defined in the file. Avoid using the error code 99 as
+much as possible. You can define your own error codes with the number
+range >= 100. Please inform IT-Recht Kanzlei of the error code and its meaning.
+Error codes for other generic errors can also be added to the number
+range < 100 by agreement.
 
-* **success:** Es hat alles geklappt. Sie bestätigen, dass der Rechtstext erfolgreich im Account/Shop
-  des Users publiziert wurde
-* **version:** Enthalten in der erfolgreichen Response, wenn die Versionen des Moduls angefragt wurden
-* **error:** Unabhängig vom Fehlercode wird der Status der Fehler-Response immer "error" sein
+### Example XML response output
 
-### Errorcodes
-
-* **error 1:** Schnittstellen-Version
-* **error 3:** Fehler beim Authentifizieren des Users, d.h. user_auth_token nicht korrekt
-* **error 4:** Wert für rechtstext_type ist leer oder gesendeter Typ wird nicht unterstützt
-* **error 5:** Wert für rechtstext_text ist leer
-* **error 6:** Wert für rechtstext_html ist leer
-* **error 9:** Wert für rechtstext_language ist leer
-* **error 10:** Wert für action ist leer
-* **error 11:** Wert für user_account_id wird benötigt (Multishop-System), ist aber leer
-* **error 12:** Fehler beim Verarbeiten der XML-POST-Daten
-* **error 17:** Wert für rechtstext_country ist leer
-* **error 18:** Wert für rechtstext_title ist leer
-* **error 80:** Die Schnittstellenkonfiguration auf Shopseite wurde noch nicht vollständig vom Nutzer abgeschlossen
-  (Beispiele: Rechtstexteseiten aus CMS noch nicht manuell zugeordnet / manuelle Generierung eines Auth-Tokens noch
-  nicht erfolgt)
-* **error 81:** Die CMS-/Textseite im Shop, in die der Rechtstext abgelegt werden soll, wurde nicht gefunden.
-* **error 99:** sonstiger, nicht näher spezifizierter Fehler (Sammelcode für alle anderen Fehler)
-
-### Beispiel XML-Response Ausgaben
-
-**Bei Erfolg "push":**
+#### "version" if successful:
 
 ```
 <?xml version="1.0" ?>
 <response>
     <status>success</status>
-    <target_url>https://www.example.de</target_url>
     <meta_shopversion>1.0</meta_shopversion>
     <meta_modulversion>1.1.0</meta_modulversion>
     <meta_phpversion>7.4</meta_phpversion>
 </response>
 ```
 
-**Bei Erfolg "getaccountlist":**
+#### "getaccountlist" if successful:
 
 ```
 <?xml version="1.0" ?>
 <response>
-    <accountlist>
-        <account>
-            <accountid>12345</accountid>
-            <accountname>Shop 1</accountname>
-        </account>
-        <account>
-            <accountid>23456</accountid>
-            <accountname>Shop 2</accountname>
-        </account>
-    </accountlist>
+    <status>success</status>
     <meta_shopversion>1.0</meta_shopversion>
     <meta_modulversion>1.1.0</meta_modulversion>
     <meta_phpversion>7.4</meta_phpversion>
+    <account>
+        <accountid>12345</accountid>
+        <accountname>Shop 1</accountname>
+        <locales>
+            <locale>de</locale>
+            <locale>en</locale>
+            <locale>fr</locale>
+        </locales>
+    </account>
+    <account>
+        <accountid>23456</accountid>
+        <accountname>Shop 2</accountname>
+        <locales>
+            <locale>de</locale>
+        </locales>
+    </account>
 </response>
 ```
 
-**Bei Erfolg "version":**
+#### "push" if successful:
 
 ```
 <?xml version="1.0" ?>
 <response>
-    <status>version</status>
+    <status>success</status>
     <meta_shopversion>1.0</meta_shopversion>
     <meta_modulversion>1.1.0</meta_modulversion>
     <meta_phpversion>7.4</meta_phpversion>
+    <target_url>https://example.org/imprint</target_url>
 </response>
 ```
 
-**Bei einem Fehler:**
+#### In the event of an error:
 
 ```
 <?xml version="1.0" ?>
 <response>
     <status>error</status>
-    <error>12</error >
-    <error_message>Something was not found!</error_message>
     <meta_shopversion>1.0</meta_shopversion>
     <meta_modulversion>1.1.0</meta_modulversion>
     <meta_phpversion>7.4</meta_phpversion>
+    <error>12</error>
+    <error_message>Something was not found!</error_message>
 </response>
 ```
 
-## Kontakt
+## Contact
 
 Herr Max-Lion Keller, LL.M.  
 IT-Recht Kanzlei, Alter Messeplatz 2, 80339 München  
-Tel.: +49 89 1301433-0, Fax: +49 89 1301433-60, E-Mail: m.keller@it-recht-kanzlei.de
-
-
-
-
+Phone: +49 89 1301433-0  
+Fax: +49 89 1301433-60  
+E-mail: m.keller@it-recht-kanzlei.de

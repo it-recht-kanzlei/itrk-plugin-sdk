@@ -1,52 +1,42 @@
-# Testen Sie Ihre Schnittstelle für die IT-Recht Kanzlei
+# Test your implementation for the IT-Recht Kanzlei legal text interface
 
 ## TestSuite
 
-Diese Tests sind unabhängig von der Art der Implementation und der verwendeten Programmiersprache Ihrer Schnittstelle,
-da die Schnittstelle über Web-Anfragen getestet wird.
-Die Tests selbst werden über php ausgeführt.
-Verwenden Sie runTestSuite.php zum Ausführen der Tests.
+These tests are independent of the type of implementation and the programming
+language used for your interface, as the interface is tested via web requests.
+The tests themselves are executed via php.
+Use runTestSuite.php to execute the tests.
 
-### Funktionsweise
+### How it works
 
-Beim Aufruf der runTestSuite.php wird die src/UnitTestEndpoint.php im built-in web server von php gestartet.
-Anschließend werden die tests aus dem Verzeichnis testCases per Web-Request (php_curl) an die API-URL geschickt und die
-API entsprechend getestet.
+When runTestSuite.php is called, `src/UnitTestEndpoint.php` is started via the built-in web server of php.
+The tests from the testCases directory are then sent to the API URL via web request (php_curl) and the API is tested accordingly.
 
-**Bitte beachten Sie: Bei der Ausführung der Tests werden eventuell vorhandene Rechtstexte überschrieben!**
+**Please note: When running the tests, any existing legal texts will be overwritten!**
 
-### Testen der TestSuite
-
-```
-php runTestSuite.php --multishop=false
-MULTISHOP=true php runTestSuite.php --multishop=true   
-```
-
-Die ENV-Variable MULTISHOP wird hier verwendet, um die Server-Komponente (src/UnitTestEndpoint.php) entsprechend zu
-konfigurieren.
-
-### Testen Ihrer eigenen Schnittstelle
+### Running the TestSuite
 
 ```
-php runTestSuite.php --multishop=false --api-url=http://www.example.com/itrk-test-api.php --api-token=IhrApiToken
-php runTestSuite.php --multishop=false --api-url=http://www.example.com/itrk-test-api.php --api-token=IhrApiToken --test-name=action_invalid
+php runTestSuite.php --help
 ```
 
-Verwenden Sie für den parameter --multishop true oder false.  
-Geben Sie die entsprechende URL für Ihren API-Endpunkt an.  
-Verwenden Sie Ihr korrektes API-Token - als Default wird hier TEST_TOKEN verwendet.    
-Mit dem Parameter --test-name können Sie einen einzelnen Test starten. Als name können Sie den Dateinamen aus dem
-Verzeichnis "testCases" verwenden (ohne .json)
-
-Falls der built-in web server von php nicht benötigt wird, können die Tests auch direkt gestartet werden:
+### Testing your own implementation
 
 ```
-php src/RunUnitTests.php --multishop=false --api-url=http://www.example.com/itrk-test-api.php --api-token=IhrApiToken
+php runTestSuite.php --api-url=http://www.example.com/itrk-test-api.php --api-token=IhrApiToken
+php runTestSuite.php --api-url=http://www.example.com/itrk-test-api.php --api-token=IhrApiToken --user-account-id=1 --test-name=action_invalid
 ```
 
-### Verwendung von curl
+Enter the corresponding URL for your API endpoint (`--api-url`).  
+Use your correct API token (`--api-token`) - the default here is "TEST_TOKEN".  
+For multishop systems, you can specify the target account (sales channel) with
+the `--user-account-id` parameter.  
+You can execute a single test with the parameter `--test-name`. You can use the
+file name from the "testCases" directory as the name (without .json)
 
-Alternativ können Sie auch curl verwenden, um Ihre Schnittstelle zu testen:
+### Using curl
+
+Alternatively, you can also use curl to test your interface:
 
 ```
 curl -X POST {URL} -dxml='{XML}'
@@ -54,9 +44,10 @@ curl -X POST {URL} -dxml='{XML}'
 curl -X POST http://www.example.com/itrk-test-api.php -dxml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>3910a691a9364947198394c4117bbe4d</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklaerung</rechtstext_title><user_account_id>123</user_account_id><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>'
 ```
 
-Das XML sowie die jeweils erwartete Antwort können Sie den json-Dateien im Verzeichnis testCases entnehmen.  
-Zum Extrahieren des XML haben wir src/XtractXml.php bereitgestellt. Damit wird das XML aus dem testCase extrahiert und
-Ihr API-Token und user_account_id (optional) eingefügt:
+The XML and the expected response can be found in the json files in the
+testCases directory.  
+To extract the XML, we have provided `src/XtractXml.php`. This extracts the XML
+from the testCase and inserts your API token and `user_account_id` (optional):
 
 ```
 php src/XtractXml.php test-file api-token [user_account_id]

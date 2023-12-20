@@ -5,7 +5,6 @@
 
 namespace ITRechtKanzlei;
 
-
 abstract class LTIHandler {
     /**
      * This method can be overwritten by you if you wish to extend the response
@@ -16,29 +15,37 @@ abstract class LTIHandler {
     }
 
     /**
-     * This method must be overwritten by you. Please add a check mechanism to check whether the sent token is valid or not.
+     * This method can be overwritten by you, if your system uses tokens to authenticate.
+     * Please add a check mechanism to check whether the sent token is valid or not.
      * Singleshop systems might implement the check like it is made in the example.php file.
      * Multishop systems maybe need database select to check the token.
      */
-    public abstract function isTokenValid(string $token): bool;
+    public function isTokenValid(string $token): bool {
+        return false;
+    }
+
+    /**
+     * This method can be overwritten by you, if your systen requires a username and password to authenticate.
+     * Please add a check mechanism to check whether the sent username and passowrd is valid or not.
+     */
+    public function validateUserPass(string $username, string $password): bool {
+         return false;
+    }
 
     /**
      * This method must be overwritten by you. Please add the logic to push the received file to your shop system.
      */
-    public abstract function handleActionPush(LTIPushData $data): \ITRechtKanzlei\LTIPushResult;
+    public abstract function handleActionPush(\ITRechtKanzlei\LTIPushData $data): \ITRechtKanzlei\LTIPushResult;
 
     /**
-     * This method must be overwritten by you if your system is a multishop system.
+     * You can override this method if your system is a multishop system and / or
+     * if you want to list the supported languages for your system / for each
+     * sales channel.
      *
-     * Please add all our shops to the shoplist like in example.php.
-     * This method is only used when ITRechtKanzlei/LTI->isMultiShop is true.
+     * Please refer to the documentation for more details.
      */
     public function handleActionGetAccountList(): \ITRechtKanzlei\LTIAccountListResult {
-        throw new \RuntimeException(sprintf('Please implement this method in %s.', get_class($this)));
-    }
-
-    public function validateUserPass(string $username, string $password): bool {
-        return false;
+        return new LTIAccountListResult();
     }
 
 }

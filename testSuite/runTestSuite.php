@@ -1,28 +1,76 @@
 <?php
+namespace PluginSDKTestSuite;
+include_once __DIR__ . '/src/ColorCodes.php';
+include_once __DIR__ . '/src/UnitTest.php';
 
-$php = $_SERVER['_'];
-$scriptDir = dirname(__FILE__);
-chdir($scriptDir . '/src/') || exit('Error: Could not change to src directory.');
+$available_short_options = '';
+$available_long_options = [
+    'help',
+    'api-token::',
+    'api-url::',
+    'user-account-id::',
+    'test-name::',
+    'verbose'
+];
+$args = getopt($available_short_options, $available_long_options);
 
-if (!isset($argv[1])) {
-    passthru($php . ' ./RunUnitTests.php');
-    exit();
+if (isset($args['help'])) {
+    UnitTest::writeWithColor(ColorCodes::RESET, "Testsuite Help - Please refer to the readme documents.");
+
+    $hasMandatoryOptions = false;
+    foreach ($available_long_options as $option) {
+        if (!preg_match('/[^:]:$/', $option)) {
+            continue;
+        }
+        if (!$hasMandatoryOptions) {
+            UnitTest::writeWithColor(ColorCodes::RESET, "Mandatory:");
+            $hasMandatoryOptions = true;
+        }
+        echo sprintf("\t--%s=VALUE", rtrim($option, ':')) . "\n";
+    }
+    echo "\n";
+    UnitTest::writeWithColor(ColorCodes::RESET, "Optional:");
+    foreach ($available_long_options as $option) {
+        if (!preg_match('/::$/', $option)) {
+            continue;
+        }
+        echo sprintf("\t--%s=VALUE", rtrim($option, ':')) . "\n";
+    }
+    return;
+} elseif (!isset($args['api-token']) && isset($args['api-url'])) {
+    UnitTest::writeWithColor(
+        ColorCodes::YELLOW,
+        "You added a target url but not a token! The tests could fail because of this! \n"
+            ."If parsing the tests response fails you probably entered a wrong target url... \n\n"
+    );
 }
 
-// Starting PHP Build-in server in background
-$pid = exec(sprintf("%s -q -S 0.0.0.0:7080 UnitTestEndpoint.php > /dev/null 2>&1 & echo $!", $php));
-if (!$pid) {
-    exit('Error: Failed to start PHP Build-in server.' . PHP_EOL);
+$userAccountId = $args['user-account-id'] ?? null;
+$apiUrl = $args['api-url'] ?? UnitTest::LOCAL_TEST_SERVER;
+$apiToken = $args['api-token'] ?? null;
+
+$unitTest = new UnitTest($apiUrl, $apiToken, $userAccountId, isset($args['verbose']));
+
+if (!isset($args['test-name'])) {
+    foreach (glob(__DIR__ . '/testCases/*.json') as $fileName) {
+        try {
+            $unitTest->runTest($fileName);
+        } catch (\RuntimeException $e) {
+            UnitTest::writeWithColor(ColorCodes::RED, $e->getMessage());
+        }
+    }
+
+    UnitTest::writeWithColor(ColorCodes::WHITE, "\n============================================");
+
+    if ($unitTest->getTestsStatus()) {
+        UnitTest::writeWithColor(ColorCodes::GREEN, "All tests passed successful!");
+    } else {
+        UnitTest::writeWithColor(ColorCodes::RED, "At least one test did not pass successful!");
+    }
+} else {
+    try {
+        $unitTest->runTest(sprintf('%s/testCases/%s.json', __DIR__, preg_replace('/\.json$/', '$1', basename($args['test-name']))));
+    } catch (\RuntimeException $e) {
+        UnitTest::writeWithColor(ColorCodes::RED, $e->getMessage());
+    }
 }
-
-// give it a second to start
-usleep(200000);
-
-if (!posix_kill($pid, 0)) {
-    exit('Error: Failed to start PHP Build-in server.' . PHP_EOL);
-}
-
-passthru($php . ' ./RunUnitTests.php ' . implode(' ', array_slice($argv, 1)));
-
-posix_kill($pid, SIGHUP);
-pcntl_waitpid($pid, $status, WNOHANG);

@@ -8,7 +8,7 @@ namespace ITRechtKanzlei;
 use Exception;
 
 class LTI {
-    const SDK_VERSION = '1.2.5';
+    const SDK_VERSION = '1.2.6';
 
     private $ltiHandler;
     private $shopVersion;
@@ -106,5 +106,29 @@ class LTI {
         if (empty($value)) {
             throw new LTIError('XML element ' . $name . '\'s value is empty.', $errorCode);
         }
+    }
+
+    /**
+     * Helper method for generating a token. The token is used to authenticate
+     * the IT Recht Kanzlei Push Service to your system.
+     * Once the token has been generated, it should be saved in your system and
+     * displayed to the client. The client then inserts the token when setting
+     * up the interface in the client portal.
+     * @see LTIHandler::isTokenValid()
+     *
+     * @param int $length The length of the token
+     * @param string|null $alphabet A list of characters the token is composed of.
+     * @return A token
+     */
+    public static function generateToken(int $length = 32, ?string $alphabet = null): string {
+        if (!$alphabet) {
+            $alphabet = implode(range('a', 'z')).implode(range('A', 'Z')).implode(range(0, 9));
+        }
+        $alphabetLength = strlen($alphabet) - 1;
+        $token = '';
+        for ($i = 0; $i < $length; ++$i) {
+            $token .= substr($alphabet, random_int(0, $alphabetLength), 1);
+        }
+        return $token;
     }
 }

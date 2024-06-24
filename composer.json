@@ -1,7 +1,7 @@
 {
     "name": "it-recht-kanzlei/itrk-plugin-sdk",
     "type": "library",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "description": "SDK for IT-Recht Kanzlei legal text plugins.",
     "keywords": [
         "IT-Recht", "Legal Texts", "Terms and Conditions", "Data Privacy", "advertising"

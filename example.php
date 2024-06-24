@@ -32,7 +32,9 @@ require_once __DIR__ . '/sdk/LTIErrorResult.php';
 
 class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
     public function isTokenValid(string $token): bool {
-        // Validate your token here
+        // Validate the token here.
+        // The token is generated once and stored in your system.
+        // For more details see the readme.md and LTI::generateToken().
         return $token == '12345678';
     }
 
@@ -58,7 +60,6 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
         return $result;
     }
 
-
     /**
      * @throws Exception
      */
@@ -78,9 +79,9 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
     public function handleActionGetAccountList(): \ITRechtKanzlei\LTIAccountListResult {
         // add all your shops here to the $accountList like seen in the example.
         $accountList = new \ITRechtKanzlei\LTIAccountListResult();
-        $accountList->addAccount('3', 'example store name 1');
-        $accountList->addAccount('8', 'example store name 2');
-        $accountList->addAccount('122', 'example store name 3');
+        $accountList->addAccount('3', 'example store name 1', ['de_DE', 'en_GB'], ['DE', 'AT', 'GB']);
+        $accountList->addAccount('8', 'example store name 2', ['de', 'fr', 'it'], ['CH']);
+        $accountList->addAccount('122', 'example store name 3', ['de'], ['DE']);
 
         return $accountList;
     }
@@ -90,7 +91,7 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
 $ltiHandler = new MyLTIHandler();
 
 // 2. Instantiate of ITRechtKanzlei\LTI and call handleRequest(...) method
-$lti = new \ITRechtKanzlei\LTI($ltiHandler, '1.2', '1.0', true /* is multishop system */);
+$lti = new \ITRechtKanzlei\LTI($ltiHandler, '1.2', '1.0');
 
 // 3. Handle the request.
 $responseResult = $lti->handleRequest($_POST['xml']);

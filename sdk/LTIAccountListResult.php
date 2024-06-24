@@ -11,7 +11,7 @@ class LTIAccountListResult extends \ITRechtKanzlei\LTIResult {
 
     private $accountList = [];
 
-    public function addAccount(string $id, ?string $name, array $locales = []): self {
+    public function addAccount(string $id, ?string $name, array $locales = [], $countries = []): self {
         if (!empty($id) && empty($name)) {
             throw new \InvalidArgumentException('The name of the account may not be empty.');
         }
@@ -21,7 +21,13 @@ class LTIAccountListResult extends \ITRechtKanzlei\LTIResult {
                 // Locales should match /^[a-z]{2,3}(_[A-Z][a-z]{3})?(_[A-Z]{2})?$/
                 // but a non-empty string is the minimum requirement.
                 return is_string($v) && !empty($v);
-            })
+            }),
+            'countries' => array_filter($countries, function ($v) {
+                // Countries are expected to be ISo-2 or ISO-3 codes and
+                // should match /^[A-Z]{2}[A-Z]?$/
+                // but a non-empty string is the minimum requirement.
+                return is_string($v) && !empty($v);
+            }),
         ];
         return $this;
     }
@@ -37,6 +43,12 @@ class LTIAccountListResult extends \ITRechtKanzlei\LTIResult {
                 $loc = $ac->addChild('locales');
                 foreach ($account['locales'] as $locale) {
                     $loc->addChild('locale', $locale);
+                }
+            }
+            if (!empty($account['countries'])) {
+                $c = $ac->addChild('countries');
+                foreach ($account['countries'] as $country) {
+                    $c->addChild('country', $country);
                 }
             }
         }

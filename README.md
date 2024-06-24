@@ -1,11 +1,11 @@
 # Interface specification for the transfer of legal texts from IT-Recht Kanzlei München to your system
 
-Data is pushed to your interface via POST in XML format. The document is UTF-8 encoded. 
+Data is pushed to your interface via POST in XML format. The document is UTF-8 encoded.
 The POST parameter is "xml" by default (`$_POST['xml']`), other agreements are possible.
 
 ## Implementation and use of the PHP SDK
 
-We offer a PHP SDK for users of our IT law firm interface. The SDK is designed for easy use.
+We offer a PHP SDK for users of our IT-Recht Kanzlei interface. The SDK is designed for easy use.
 First, the two abstract methods of the class **LTIHandler** class and one of the
 two authentication methods must be overwritten.
 
@@ -13,7 +13,7 @@ two authentication methods must be overwritten.
 
 #### Authentication methods
 
-To ensure that the transfer of the legal texts originates from the 
+To ensure that the transfer of the legal texts originates from the
 IT-Recht Kanzlei system, you can implement one of the following two methods.
 
 ##### isTokenValid(string $token): bool
@@ -21,7 +21,8 @@ IT-Recht Kanzlei system, you can implement one of the following two methods.
 The validity of the transmitted token must be checked here if the system should work with a token.
 The token is generated manually by you or automatically by your system and stored
 in the client portal of IT-Recht Kanzlei during configuration of the interface
-by the user of the interface.This is the preferred authentication method.
+by the user of the interface. This is the preferred authentication method.
+To generate a random token see `LTI::generateToken()`.
 
 ##### validateUserPass(string $username, string $password): bool
 
@@ -34,13 +35,13 @@ in the client portal when setting up the interface.
 
 This function should return a list of all sales channels in your system.
 An ID (`accountid`) and the name (`accountname`) must be specified for each
-sales channel. In addition, a list of available target languages can be
-transferred for each sales channel.
+sales channel. In addition, a list of available target languages and countries
+can be transferred for each sales channel.
 
 Even if your system is not a multishop system, it is recommended to implement
-this function to announce the supported target languages of your system. For
-this use case, only one sales channel needs to be specified where the ID is
-specified as `0`. The account name can remain empty.
+this function to announce the supported target languages and countries of your
+system. For this use case, only one sales channel needs to be specified where
+the ID is specified as `0`. The account name can remain empty.
 
 Important: Please ensure that these 5 special XML characters are replaced by
 corresponding entities in the names of the sales channels (`accountname`):
@@ -100,7 +101,7 @@ Requirements for the processing of version numbers by the client portal of IT-Re
 If your system is a so-called multishop system, i.e. several sales channels/services
 exist under one administration interface, it is necessary that the user of your
 implementation is offered a list of available sales channels/services for which
-the legal texts are to be transferred in the client portal of the IT law firm.
+the legal texts are to be transferred in the client portal of the IT-Recht Kanzlei.
 
 The list of sales channels is retrieved using the function `handleActionGetAccountList()`.
 
@@ -129,7 +130,6 @@ in the XML element `user_account_id` for multishop systems.
 
 To test your implementation of the interface, please read the README.md
 in the **testSuite** directory.
-
 
 An additional tool you can use for testing is the
 [LTI Test Tool](https://www.it-recht-kanzlei.de/developer/sdk.php).
@@ -171,10 +171,10 @@ that could be helpful for your own implementation.
 * rechtstext_type [string] (impressum | agb | datenschutz | widerruf )
 
   Type of legal text transferred
-  - impressum = imprint
-  - agb = general terms and conditions
-  - datenschutz = privacy policy
-  - widerruf = cancellation policy
+    - impressum = imprint
+    - agb = general terms and conditions
+    - datenschutz = privacy policy
+    - widerruf = cancellation policy
 
 * rechtstext_title [string]
 
@@ -253,6 +253,12 @@ range < 100 by agreement.
             <locale>en</locale>
             <locale>fr</locale>
         </locales>
+        <countries>
+          <country>DE</country>
+          <country>AT</country>
+          <country>GB</country>
+          <country>FR</country>
+        </countries>
     </account>
     <account>
         <accountid>23456</accountid>
@@ -260,6 +266,9 @@ range < 100 by agreement.
         <locales>
             <locale>de</locale>
         </locales>
+        <countries>
+          <country>DE</country>
+        </countries>
     </account>
 </response>
 ```

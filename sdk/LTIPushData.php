@@ -106,6 +106,16 @@ class LTIPushData {
         return (string)$this->xmlData->api_version;
     }
 
+    /**
+     * Returns the raw pared XML-Data. The use of this method is discuraged,
+     * as each property you want to use is accessible via a dedicated getter.
+     * This method is only available to access non-standard properties.
+     * @return \SimpleXMLElement
+     */
+    public function getXml(): \SimpleXMLElement {
+        return $this->xmlData;
+    }
+
      /**
       * @throws LTIError
       */

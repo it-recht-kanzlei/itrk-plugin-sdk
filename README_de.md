@@ -23,6 +23,8 @@ System mit einem Token arbeiten soll. Der Token wird von Ihnen manuell bzw.
 Ihrem Shopsystem automatisiert generiert und während Konfiguration der
 Schnittstelle durch den Nutzer der Schnittstelle im Mandantenportal der
 IT-Recht Kanzlei hinterlegt. Dies ist die bevorzugte Authentifikationsmethode.
+Um ein zufälliges Token zu erzeugen können Sie die Methode `LTI::generateToken()`
+verwenden.
 
 ##### validateUserPass(string $username, string $password): bool
 
@@ -37,13 +39,13 @@ im Mandantenportal hinterlegt werden.
 Diese Funktion soll als Ergebnis eine Liste aller Verkaufskanäle (Sales Channels)
 Ihres Systems zurück liefern. Für jeden Verkaufskanal ist eine ID  (`accountid`)
 und der Name (`accountname`) anzugeben. Zusätzlich kann zu jedem Verkaufskanal
-eine Liste der verfügbaren Zielsprachen übergeben werden.
+eine Liste der verfügbaren Zielsprachen und -länder übergeben werden.
 
 Auch wenn es sich bei Ihrem System nicht um ein Multishop-System handelt, wird
-empfohlen diese Funktion zu implementieren, um die unterstützten Zielsprachen Ihres
-Systems bekannt zu machen. Für diesen Anwendungsfall muss nur ein Verkaufskanal
-angegeben werden bei dem die ID mit `0` angeben wird. Der Accountname kann
-ebenfalls leer bleiben.
+empfohlen diese Funktion zu implementieren, um die unterstützten Zielsprachen
+und -länder Ihres Systems bekannt zu machen. Für diesen Anwendungsfall muss nur
+ein Verkaufskanal angegeben werden bei dem die ID mit `0` angeben wird. Der
+Accountname kann ebenfalls leer bleiben.
 
 Wichtig: Bitte achten Sie bei den Namen der Verkaufskanäle (`accountname`) darauf,
 dass diese 5 XML-Sonderzeichen durch entsprechende Entities ersetzt werden:
@@ -257,6 +259,12 @@ weitere generische Fehler können nach Absprache auch dem Zahlenraum < 100 hinzu
             <locale>en</locale>
             <locale>fr</locale>
         </locales>
+        <countries>
+          <country>DE</country>
+          <country>AT</country>
+          <country>GB</country>
+          <country>FR</country>
+        </countries>
     </account>
     <account>
         <accountid>23456</accountid>
@@ -264,6 +272,9 @@ weitere generische Fehler können nach Absprache auch dem Zahlenraum < 100 hinzu
         <locales>
             <locale>de</locale>
         </locales>
+        <countries>
+          <country>DE</country>
+        </countries>
     </account>
 </response>
 ```

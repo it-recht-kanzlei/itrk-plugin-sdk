@@ -1,0 +1,42 @@
+<?php
+return new class($options) extends \PluginSDKTestSuite\UnitTest {
+
+    public function getTestName(): string
+    {
+        return 'Rechtstext title missing';
+    }
+
+    public function getRequestXml(): string
+    {
+        return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<api>
+  <api_version>1.0</api_version>
+  <rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion>
+  <rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion>
+  <rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion>
+  <user_auth_token>TEST_TOKEN</user_auth_token>
+  <rechtstext_type>datenschutz</rechtstext_type>
+  <rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf>
+  <rechtstext_country>DE</rechtstext_country>
+  <rechtstext_language>de</rechtstext_language>
+  <rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b>
+  <action>push</action>
+  <rechtstext_text>Beispielrechtstext</rechtstext_text>
+  <rechtstext_html>HTML Beispieltext</rechtstext_html>
+</api>
+';
+    }
+
+    public function isMultiShopTest(): bool
+    {
+        return false;
+    }
+
+    public function getResult(): array
+    {
+        return array (
+          'status' => 'error',
+          'error' => '18',
+        );
+    }
+};

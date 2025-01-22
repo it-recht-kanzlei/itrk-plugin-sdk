@@ -13,7 +13,7 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
      * @throws \Exception
      */
     public function handleActionPush(\ITRechtKanzlei\LTIPushData $data): \ITRechtKanzlei\LTIPushResult {
-        if ($data->getType() != 'impressum' && $data->hasPdf()) {
+        if (($data->getType() !== 'impressum') && $data->hasPdf()) {
             $data->getPdf();
         }
         // This header is only for the local test server and not an official header.
@@ -36,9 +36,16 @@ error_reporting(-1);
 ini_set('display_errors', true);
 ini_set('html_errors', false);
 
+// Implement either one and let us know which one you've decided for.
+if (isset($_SERVER['CONTENT_TYPE']) && (strpos($_SERVER['CONTENT_TYPE'], 'multipart') !== false)) {
+    $payload = $_POST['xml'] ?? '';
+} else {
+    $payload = file_get_contents('php://input');
+}
+
 $ltiHandler = new MyLTIHandler();
 $lti = new \ITRechtKanzlei\LTI($ltiHandler, '1.2', '1.0');
-$responseResult = $lti->handleRequest($_POST['xml'] ?? '');
+$responseResult = $lti->handleRequest($payload);
 
 header('Content-Type: application/xml; charset=utf-8');
 header('Content-Length: ' . strlen($responseResult));

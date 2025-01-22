@@ -11,7 +11,7 @@ class LTIAccountListResult extends \ITRechtKanzlei\LTIResult {
 
     private $accountList = [];
 
-    public function addAccount(string $id, ?string $name, array $locales = [], $countries = []): self {
+    public function addAccount(string $id, ?string $name, array $locales = [], $countries = [], $additionalData = []): self {
         if (!empty($id) && empty($name)) {
             throw new \InvalidArgumentException('The name of the account may not be empty.');
         }
@@ -28,6 +28,7 @@ class LTIAccountListResult extends \ITRechtKanzlei\LTIResult {
                 // but a non-empty string is the minimum requirement.
                 return is_string($v) && !empty($v);
             }),
+            'additionalData' => $additionalData
         ];
         return $this;
     }
@@ -50,6 +51,9 @@ class LTIAccountListResult extends \ITRechtKanzlei\LTIResult {
                 foreach ($account['countries'] as $country) {
                     $c->addChild('country', $country);
                 }
+            }
+            if (!empty($account['additionalData'])) {
+                $this->buildNode($ac, 'additionaldata', $account['additionalData']);
             }
         }
         return $simpleXml;

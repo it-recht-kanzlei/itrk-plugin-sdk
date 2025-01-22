@@ -8,19 +8,21 @@ namespace ITRechtKanzlei;
 class LTIPushData {
     public const DOCTYPE_IMPRINT              = 'impressum';
     public const DOCTYPE_TERMS_AND_CONDITIONS = 'agb';
+    /** @deprecated */
     public const DOCTYPE_CAMCELLATION_POLICY  = 'widerruf';
+    public const DOCTYPE_CANCELLATION_POLICY  = 'widerruf';
     public const DOCTYPE_PRIVACY_POLICY       = 'datenschutz';
 
-    protected const ALLOWED_DOCUMENT_TYPES = [
+    public const ALLOWED_DOCUMENT_TYPES = [
         self::DOCTYPE_IMPRINT,
         self::DOCTYPE_TERMS_AND_CONDITIONS,
-        self::DOCTYPE_CAMCELLATION_POLICY,
+        self::DOCTYPE_CANCELLATION_POLICY,
         self::DOCTYPE_PRIVACY_POLICY
     ];
 
     public const DOCTYPES_TO_MAIL = [
         self::DOCTYPE_TERMS_AND_CONDITIONS,
-        self::DOCTYPE_CAMCELLATION_POLICY
+        self::DOCTYPE_CANCELLATION_POLICY
     ];
 
     protected $xmlData = null;
@@ -36,7 +38,7 @@ class LTIPushData {
 
     public function getMultiShopId(): string {
         // Only check this element, if it is explicitly requested.
-        // The implmenentations that are not multishop capable do not require
+        // The implementations that are not multishop-capable do not require
         // this parameter to be set.
         $this->checkXmlElementAvailable('user_account_id', null, LTIError::INVALID_USER_ACCOUNT_ID);
         return (string)$this->xmlData->user_account_id;
@@ -83,7 +85,37 @@ class LTIPushData {
     }
 
     public function hasPdf(): bool {
-        return ($this->xmlData->rechtstext_pdf != null) && !empty($this->xmlData->rechtstext_pdf);
+        return (($this->xmlData->rechtstext_pdf != null) && !empty($this->xmlData->rechtstext_pdf))
+            || (($this->xmlData->rechtstext_pdf_url != null) && !empty($this->xmlData->rechtstext_pdf_url));
+    }
+
+    private function downloadPdf(): string {
+        $this->checkXmlElementAvailable('rechtstext_pdf_url', null, LTIError::INVALID_DOCUMENT_PDF);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, (string)$this->xmlData->rechtstext_pdf_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $result = curl_exec($ch);
+        $error = null;
+        if (($errNo = curl_errno($ch)) !== CURLE_OK) {
+            $error = new LTIError(
+                sprintf('Unable to download PDF file. cURL error (%d): %s', $errNo, curl_error($ch)),
+                LTIError::INVALID_DOCUMENT_PDF
+            );
+        } elseif (($statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE)) !== 200) {
+            $error = new LTIError(
+                sprintf('Unable to download PDF file. HTTP status code: %d.', $statusCode),
+                LTIError::INVALID_DOCUMENT_PDF
+            );
+        }
+        curl_close($ch);
+
+        if ($error instanceof LTIError) {
+            throw $error;
+        }
+        return $result;
     }
 
      /**
@@ -94,9 +126,14 @@ class LTIPushData {
             throw new LTIError('No pdf available!', LTIError::INVALID_DOCUMENT_PDF);
         }
 
-        $pdfBin = base64_decode($this->xmlData->rechtstext_pdf, true);
+        if (isset($this->xmlData->rechtstext_pdf) && !empty($this->xmlData->rechtstext_pdf)) {
+            $pdfBin = base64_decode($this->xmlData->rechtstext_pdf, true);
+        } else {
+            $pdfBin = $this->downloadPdf();
+        }
+
         if (substr($pdfBin, 0, 4) != '%PDF') {
-            throw new LTIError('Sent pdf cannot be recognized as such!', LTIError::INVALID_DOCUMENT_PDF);
+            throw new LTIError('Content of PDF file is invalid.', LTIError::INVALID_DOCUMENT_PDF);
         }
 
         return (string)$pdfBin;
@@ -122,7 +159,6 @@ class LTIPushData {
     protected function checkXmlData() {
         $this->checkXmlElementAvailable('rechtstext_type', self::ALLOWED_DOCUMENT_TYPES, LTIError::INVALID_DOCUMENT_TYPE);
         if ((string)$this->xmlData->rechtstext_type !== 'impressum') {
-            $this->checkXmlElementAvailable('rechtstext_pdf', null, LTIError::INVALID_DOCUMENT_PDF);
             $this->checkXmlElementAvailable('rechtstext_pdf_filename_suggestion', null, LTIError::INVALID_FILE_NAME);
             $this->checkXmlElementAvailable('rechtstext_pdf_filenamebase_suggestion', null, LTIError::INVALID_FILE_NAME);
             $this->checkXmlElementAvailable('rechtstext_pdf_localized_filenamebase_suggestion', null, LTIError::INVALID_FILE_NAME);

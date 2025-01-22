@@ -1,8 +1,0 @@
-{
-  "name": "Parsing xml failed",
-  "data": "No xml data",
-  "result": {
-    "status": "error",
-    "error": "12"
-  }
-}

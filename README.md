@@ -61,6 +61,15 @@ integrated into the corresponding target page. The document is processed here.
 The `LTIPushData` object has getter methods for all properties of the document
 that can be queried and subsequently processed.
 
+#### preHandleRequest()
+
+This method can be used to initialize resources or to validate preconditions
+(eg. configuration settings) that the target system has to fulfill in order to
+operate.
+
+If the necessary conditions are not met, you can throw an exception here
+which will be converted to a properly formatted error response.
+
 ### Use of the LTI class and the LTI handler you have implemented.
 
 The class `LTI` (`LTI.php`) takes over the preprocessing of the incoming XML data,

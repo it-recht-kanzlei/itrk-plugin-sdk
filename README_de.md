@@ -66,6 +66,16 @@ hier vorgenommen. Das Objekt `LTIPushData` verfügt über Getter-Methoden für a
 Eigenschaften des Dokuments, die abgefragt und anschließend weiterverarbeitet
 werden können.
 
+#### preHandleRequest()
+
+Diese Methode kann verwendet werden, um Ressourcen zu initialisieren oder
+um Vorbedingungen zu validieren (z.B. Konfigurationseinstellungen), die das
+Zielsystem erfüllen muss, um zu funktionieren.
+
+Wenn die erforderlichen Bedingungen nicht erfüllt sind, können Sie hier eine
+Exception auslösen, die in eine korrekt formatierte Fehlerantwort umgewandelt
+wird.
+
 ### Verwendung der LTI Klasse und des von Ihnen implementierten LTIHandlers.
 
 Die Klasse `LTI` (`LTI.php`) übernimmt die Vorverarbeitung der eingehen XML-Daten,

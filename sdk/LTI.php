@@ -2,13 +2,12 @@
 /*
  * Please do NOT edit this class to ensure that the code remains executable.
  */
-
 namespace ITRechtKanzlei;
 
 use Exception;
 
 class LTI {
-    const SDK_VERSION = '1.2.6';
+    const SDK_VERSION = '1.2.8';
 
     private $ltiHandler;
     private $shopVersion;
@@ -16,6 +15,8 @@ class LTI {
     private $xmlData;
 
     private $errorCallback = null;
+
+    private $includeErrorStackTrace = false;
 
     public function __construct(\ITRechtKanzlei\LTIHandler $ltiHandler, string $shopVersion, string $modulVersion) {
         $this->ltiHandler = $ltiHandler;
@@ -35,8 +36,22 @@ class LTI {
         return $this;
     }
 
+    /**
+     * Enable this option to include a stack trace in the error result.
+     * Mainly used for debugging purposes.
+     *
+     * @param bool $includeErrorStackTrace
+     * @return $this
+     */
+    public function setIncludeErrorStackTrace(bool $includeErrorStackTrace): self {
+        $this->includeErrorStackTrace = $includeErrorStackTrace;
+        return $this;
+    }
+
     public function handleRequest(?string $xml): LTIResult {
         try {
+            $this->ltiHandler->preHandleRequest();
+
             libxml_use_internal_errors(true);
 
             if (!is_string($xml) || empty($xml = trim($xml))) {
@@ -92,7 +107,7 @@ class LTI {
             if (is_callable($this->errorCallback)) {
                 call_user_func($this->errorCallback, $e);
             }
-            $error = new \ITRechtKanzlei\LTIErrorResult($e);
+            $error = new \ITRechtKanzlei\LTIErrorResult($e, $this->includeErrorStackTrace);
             $error->setVersions($this->shopVersion, $this->modulVersion);
             return $error;
         }

@@ -1,5 +1,5 @@
 #!/bin/bash
-# apt-get install pandoc texlive-latex-recommended lmodern texlive-lang-german
+# apt-get install pandoc lmodern texlive-latex-recommended texlive-lang-german texlive-latex-extra
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 

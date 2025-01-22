@@ -9,9 +9,32 @@ use SimpleXMLElement;
 
 class LTIErrorResult extends \ITRechtKanzlei\LTIResult {
     private $exception;
+    private $withTrace = false;
 
-    public function __construct(\Throwable $e) {
+    public function __construct(\Throwable $e, bool $withTrace = false) {
         $this->exception = $e;
+        $this->withTrace = $withTrace;
+    }
+
+    protected function buildTraceNode(
+        SimpleXMLElement $node,
+        string $nodeName,
+        array $trace
+    ): void {
+        if (!$this->withTrace) {
+            return;
+        }
+        $pTrace = [];
+        foreach ($trace as $frame) {
+            unset($frame['args']);
+            $pTrace[] = $frame;
+            if (isset($frame['class']) && ($frame['class'] === LTI::class)) {
+                break;
+            }
+        }
+        if (!empty($pTrace)) {
+            $this->buildNode($node, $nodeName, $pTrace);
+        }
     }
 
     protected function buildPreviousExceptionNode(SimpleXMLElement $node, \Throwable $e) {
@@ -20,6 +43,8 @@ class LTIErrorResult extends \ITRechtKanzlei\LTIResult {
         $node->addChild('code', $e->getCode());
         $node->addChild('file', $e->getFile());
         $node->addChild('line', $e->getLine());
+        $this->buildTraceNode($node, 'trace', $e->getTrace());
+
         if (($pe = $e->getPrevious()) !== null) {
             $this->buildPreviousExceptionNode($node->addChild('previous'), $pe);
         }
@@ -43,6 +68,8 @@ class LTIErrorResult extends \ITRechtKanzlei\LTIResult {
         } else if (!empty($this->exception->getContext())) {
             $this->buildNode($simpleXml, 'error_context', $this->exception->getContext());
         }
+        $this->buildTraceNode($simpleXml, 'error_trace', $this->exception->getTrace());
+
         if (($pe = $this->exception->getPrevious()) !== null) {
             $this->buildPreviousExceptionNode($simpleXml->addChild('error_previous'), $pe);
         }

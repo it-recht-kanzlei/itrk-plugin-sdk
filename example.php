@@ -31,6 +31,18 @@ require_once __DIR__ . '/sdk/LTIVersionResult.php';
 require_once __DIR__ . '/sdk/LTIErrorResult.php';
 
 class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
+
+    /**
+     * This method can be used to initialize resources or to validate preconditions
+     * that the target system has to fulfill in order to operate.
+     * If the necessary conditions are not met, you can throw an exception here
+     * which will be converted to a properly formatted error response.
+     * @throws \Exception
+     */
+    public function preHandleRequest(): void {
+
+    }
+
     public function isTokenValid(string $token): bool {
         // Validate the token here.
         // The token is generated once and stored in your system.
@@ -72,7 +84,7 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
             $pdf_binary = $data->getPdf();
         }
 
-        return new \ITRechtKanzlei\LTIPushResult('https://www.example.com/policies/imprint');
+        return new \ITRechtKanzlei\LTIPushResult('https://www.example.com/policies/legal-notice');
     }
 
     // This method only has to be created, if your system is a multishop system.
@@ -92,6 +104,10 @@ $ltiHandler = new MyLTIHandler();
 
 // 2. Instantiate of ITRechtKanzlei\LTI and call handleRequest(...) method
 $lti = new \ITRechtKanzlei\LTI($ltiHandler, '1.2', '1.0');
+
+// Include a stack trace in the error result. Only used for debugging purposes.
+// Should be disabled for the production version of your plugin.
+$lti->setIncludeErrorStackTrace(true);
 
 // 3. Handle the request.
 $responseResult = $lti->handleRequest($_POST['xml']);

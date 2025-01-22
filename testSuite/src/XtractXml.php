@@ -1,23 +1,21 @@
 <?php
+require_once __DIR__.'/Options.php';
+require_once __DIR__.'/UnitTest.php';
 
 if (!isset($argv[2])) {
-    fwrite(STDERR, 'usage: XtractXml.php test-filename YourApiToken [user_account_id]' . PHP_EOL . PHP_EOL);
-    die();
+    fwrite(STDERR, 'Usage: php XtractXml.php test-filename YourApiToken [user_account_id]' . PHP_EOL . PHP_EOL);
+    exit(1);
 }
 
-$filename = basename($argv[1]);
-if (substr($filename, -5) !== '.json') {
-    $filename .= '.json';
+$filename = basename($argv[1], '.php').'.php';
+$filepath = __DIR__ . '/../testCases/' . basename($filename);
+if (!is_readable($filepath)) {
+    fwrite(STDERR, 'Test file can not be read.' . PHP_EOL . PHP_EOL);
+    exit(1);
 }
-$token = $argv[2];
+$options = new PluginSDKTestSuite\Options('', $argv[2], $argv[3] ?? '');
+$test = require($filepath);
 
-$json = json_decode(file_get_contents(__DIR__ . '/../testCases/' . $filename), true);
-$xml = $json['data'];
-$xml = str_replace('<user_auth_token>TEST_TOKEN</user_auth_token>', '<user_auth_token>' . $token . '</user_auth_token>', $xml);
-
-if (isset($argv[3])) {
-    $user_account_id = $argv[3];
-    $xml = str_replace('<user_account_id>123</user_account_id>', '<user_account_id>' . $user_account_id . '</user_account_id>', $xml);
-}
-
-echo $xml;
+echo PluginSDKTestSuite\UnitTest::formatXmlStr($test->prepareXml());
+echo "\n";
+exit(0);

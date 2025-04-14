@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response>
+    <status>success</status>
+    <meta_shopversion>1.0</meta_shopversion>
+    <meta_modulversion>1.1.0</meta_modulversion>
+    <meta_phpversion>8.4</meta_phpversion>
+    <target_url>https://www.example.org/legal-notice</target_url>
+</response>

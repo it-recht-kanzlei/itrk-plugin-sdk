@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<api>
+    <api_version>1.0</api_version>
+    <action>push</action>
+    <user_auth_token>EXAMPLE_TOKEN</user_auth_token>
+    <user_account_id>sc-id-01</user_account_id>
+    <rechtstext_type>agb</rechtstext_type>
+    <rechtstext_type_ucase>AGB</rechtstext_type_ucase>
+    <rechtstext_title>General Terms and Conditions</rechtstext_title>
+    <rechtstext_country>DE</rechtstext_country>
+    <rechtstext_language>en</rechtstext_language>
+    <rechtstext_language_iso639_2b>eng</rechtstext_language_iso639_2b>
+    <rechtstext_pdf_filenamebase_suggestion>agb</rechtstext_pdf_filenamebase_suggestion>
+    <rechtstext_pdf_filename_suggestion>agb.pdf</rechtstext_pdf_filename_suggestion>
+    <rechtstext_pdf_localized_filenamebase_suggestion>general-terms-and-conditions</rechtstext_pdf_localized_filenamebase_suggestion>
+    <rechtstext_pdf_url>https://www.it-recht-kanzlei.de/rechtstexte/m1/181/1/1234567890abcdef1234567890abcdef.pdf</rechtstext_pdf_url>
+    <rechtstext_pdf>JVBERi0xLjQKJeKCrOKAmsaSCjEgMCBvYmo8PC9UeXBlL0NhdGFsb2cvUGFnZXMgMiAwIFI+PmVuZG9iagoyIDAgb2JqPDwvVHlwZS9QYWdlcy9LaWRzWzMgMCBSXS9Db3VudCAxPj5lbmRvYmoKMyAwIG9iajw8L1R5cGUvUGFnZS9QYXJlbnQgMiAwIFIvTWVkaWFCb3hbMCAwIDU5NSA3OTJdL1Jlc291cmNlczw8L0ZvbnQ8PC9GMSA0IDAgUj4+Pj4vQ29udGVudHMgNSAwIFI+PmVuZG9iago0IDAgb2JqPDwvVHlwZS9Gb250L1N1YnR5cGUvVHlwZTEvTmFtZS9GMS9CYXNlRm9udC9IZWx2ZXRpY2EvRW5jb2RpbmcvTWFjUm9tYW5FbmNvZGluZz4+ZW5kb2JqCjUgMCBvYmo8PC9MZW5ndGggNDQ+PgpzdHJlYW0KQlQgL0YxIDIwIFRmIDIyMCA3MDAgVGQgKEhlbGxvIFdvcmxkISkgVGogRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNiAKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDE1IDAwMDAwIG4gCjAwMDAwMDAwNTggMDAwMDAgbiAKMDAwMDAwMDEwNyAwMDAwMCBuIAowMDAwMDAwMjE3IDAwMDAwIG4gCjAwMDAwMDAzMTIgMDAwMDAgbiAKdHJhaWxlcgo8PC9Sb290IDEgMCBSL1NpemUgNj4+CnN0YXJ0eHJlZgo0MDMKJSVFT0Y=</rechtstext_pdf>
+    <rechtstext_pdf_md5hash>c9a0574850d3a3332d35991143dd08d5</rechtstext_pdf_md5hash>
+    <rechtstext_text>––––––––––––––––––––––––––––&#13;
+        General Terms and Conditions&#13;
+        ––––––––––––––––––––––––––––&#13;
+        &#13;
+        &#13;
+        Table of Contents&#13;
+        –––––––––––––––––&#13;
+        1. Scope of Application&#13;
+        2. Conclusion of the Contract&#13;
+        &#13;
+        &#13;
+        1) Scope of Application&#13;</rechtstext_text>
+    <rechtstext_html>&lt;div&gt;&lt;h1&gt;General Terms and Conditions&lt;/h1&gt;
+
+        &lt;h2&gt;Table of Contents&lt;/h2&gt;
+        &lt;ol&gt;
+        &lt;li&gt;Scope of Application&lt;/li&gt;
+        &lt;li&gt;Conclusion of the Contract&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;h2&gt;1) Scope of Application&lt;/h2&gt;&lt;/div&gt;</rechtstext_html>
+</api>

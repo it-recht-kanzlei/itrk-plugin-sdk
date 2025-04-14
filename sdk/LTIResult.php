@@ -7,7 +7,7 @@ namespace ITRechtKanzlei;
 
 use SimpleXMLElement;
 
-class LTIResult {
+abstract class LTIResult {
 
     private $shopVersion;
     private $modulVersion;
@@ -68,7 +68,7 @@ class LTIResult {
     }
 
     protected function buildXML(): SimpleXMLElement {
-        $simpleXml = new SimpleXMLElement('<response></response>');
+        $simpleXml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><response></response>');
         $simpleXml->addChild('status', 'success');
         $simpleXml->addChild('meta_shopversion', $this->shopVersion);
         $simpleXml->addChild('meta_phpversion', phpversion());
@@ -82,11 +82,24 @@ class LTIResult {
         return $simpleXml;
     }
 
+    /**
+     *You can use this method to add further information to the answer. If the information is important,
+     * please contact the technical support of IT-Recht Kanzlei so that the data can be used accordingly.
+     *
+     * @param string $key
+     * @param $data
+     * @return $this
+     */
     public function setMetaData(string $key, $data): self {
         $this->metaData[$key] = $data;
         return $this;
     }
 
+    /**
+     * Use this method to convert the result into an xml response in the expected format.
+     *
+     * @return string
+     */
     public function __toString(): string {
         return $this->buildXML()->asXML();
     }

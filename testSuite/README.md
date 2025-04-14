@@ -16,13 +16,13 @@ The tests from the testCases directory are then sent to the API URL via web requ
 
 ### Running the TestSuite
 
-```
+```bash
 php runTestSuite.php --help
 ```
 
 ### Testing your own implementation
 
-```
+```bash
 php runTestSuite.php --api-url=http://www.example.com/itrk-test-api.php --api-token=IhrApiToken
 php runTestSuite.php --api-url=http://www.example.com/itrk-test-api.php --api-token=IhrApiToken --user-account-id=1 --test-name=action_invalid
 ```
@@ -38,10 +38,10 @@ file name from the "testCases" directory as the name (without .json)
 
 Alternatively, you can also use curl to test your interface:
 
-```
+```bash
 curl -X POST {URL} -dxml='{XML}'
 
-curl -X POST http://www.example.com/itrk-test-api.php -dxml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><api><api_version>1.0</api_version><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><user_auth_token>3910a691a9364947198394c4117bbe4d</user_auth_token><rechtstext_type>datenschutz</rechtstext_type><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_title>Datenschutzerklaerung</rechtstext_title><user_account_id>123</user_account_id><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><action>push</action><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>'
+curl -X POST http://www.example.com/itrk-test-api.php -dxml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><api><api_version>1.0</api_version><user_auth_token>1234567890</user_auth_token><action>push</action><user_account_id>123</user_account_id><rechtstext_type>datenschutz</rechtstext_type><rechtstext_title>Datenschutzerklaerung</rechtstext_title><rechtstext_country>DE</rechtstext_country><rechtstext_language>de</rechtstext_language><rechtstext_language_iso639_2b>ger</rechtstext_language_iso639_2b><rechtstext_pdf_filenamebase_suggestion>datenschutz</rechtstext_pdf_filenamebase_suggestion><rechtstext_pdf_localized_filenamebase_suggestion>Datenschutzerklaerung.pdf</rechtstext_pdf_localized_filenamebase_suggestion><rechtstext_pdf_filename_suggestion>datenschutz</rechtstext_pdf_filename_suggestion><rechtstext_pdf>JVBERiAxMjM0</rechtstext_pdf><rechtstext_text>Beispielrechtstext</rechtstext_text><rechtstext_html>HTML Beispieltext</rechtstext_html></api>'
 ```
 
 The XML and the expected response can be found in the json files in the
@@ -49,11 +49,11 @@ testCases directory.
 To extract the XML, we have provided `src/XtractXml.php`. This extracts the XML
 from the testCase and inserts your API token and `user_account_id` (optional):
 
-```
+```bash
 php src/XtractXml.php test-file api-token [user_account_id]
 php src/XtractXml.php push_valid IhrApiToken MultiShopId
 ```
 
-```
+```bash
 curl -X POST http://www.example.com/itrk-test-api.php -dxml="$(php ./src/XtractXml.php push_valid IhrApiToken MultiShopId)"
 ```

@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{hyperref}
@@ -12,6 +13,12 @@
 \usepackage{lastpage}
 \usepackage{titling}
 \usepackage{upquote}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{calc} % for calculating minipage widths
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=4cm]{geometry}
 
 \predate{}
 \postdate{}
@@ -20,7 +27,7 @@
 \pretitle{%
   \begin{center}
   \LARGE
-  \includegraphics[height=2cm]{util/Logo}\\[\bigskipamount]
+  \includegraphics[height=2cm]{docs/doc-gen/Logo}\\[\bigskipamount]
 }
 \posttitle{\end{center}}
 \setlength{\droptitle}{-10em}
@@ -29,9 +36,6 @@
     \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \pagestyle{fancy}
-\usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=4cm]{geometry}
-
-\usepackage{listings}
 
 \fancypagestyle{itrkfooter}{
   \fancyhf{}
@@ -43,7 +47,7 @@
   \fancyhf{}
   \pagestyle{itrkfooter}
   \setlength{\headheight}{2cm}
-  \fancyhead[L]{\includegraphics[height=1.5cm]{util/Logo}}
+  \fancyhead[L]{\includegraphics[height=1.5cm]{docs/doc-gen/Logo}}
 }
 \pagestyle{itrkdoc}
 
@@ -61,16 +65,28 @@
   \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
 
-\lstset{basicstyle=\small\ttfamily, basewidth=0.5em}
+\lstset{basicstyle=\footnotesize\ttfamily, basewidth=0.5em}
 \lstset{breaklines=true}
 \lstset{backgroundcolor=\color{black!10}}
 \lstset{
     framexleftmargin=5pt,
     xleftmargin=5pt,
 }
+\lstset{literate=%
+  {Ö}{{\"O}}1
+  {Ä}{{\"A}}1
+  {Ü}{{\"U}}1
+  {ß}{{\ss}}1
+  {ü}{{\"u}}1
+  {ä}{{\"a}}1
+  {ö}{{\"o}}1
+}
 
 \BeforeBeginEnvironment{lstlisting}{\par\noindent\begin{minipage}{\linewidth}}
 \AfterEndEnvironment{lstlisting}{\end{minipage}\par\addvspace{\topskip}}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
 
 \title{$pagetitle$}
 

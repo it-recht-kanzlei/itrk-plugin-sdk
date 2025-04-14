@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response>
+    <status>error</status>
+    <meta_shopversion>1.0</meta_shopversion>
+    <meta_modulversion>1.1.0</meta_modulversion>
+    <meta_phpversion>8.4</meta_phpversion>
+    <error>50</error>
+    <error_message>The legal text could not be saved because Jupiter and Saturn are not in alignment with the shop.</error_message>
+</response>

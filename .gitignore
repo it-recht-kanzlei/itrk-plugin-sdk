@@ -1,2 +1,6 @@
 .DS_Store
 .idea
+docs/example-implementation/storage/*.xml
+docs/example-implementation/storage/*.txt
+docs/example-implementation/storage/*.html
+docs/example-implementation/storage/*.pdf

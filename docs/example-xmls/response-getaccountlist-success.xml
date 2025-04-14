@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response>
+    <status>success</status>
+    <meta_shopversion>1.0</meta_shopversion>
+    <meta_modulversion>1.1.0</meta_modulversion>
+    <meta_phpversion>8.4</meta_phpversion>
+    <account>
+        <accountid>12345</accountid>
+        <accountname>Shop 1</accountname>
+        <locales>
+            <locale>de</locale>
+            <locale>en</locale>
+            <locale>fr</locale>
+        </locales>
+        <countries>
+            <country>DE</country>
+            <country>AT</country>
+            <country>GB</country>
+            <country>FR</country>
+        </countries>
+    </account>
+    <account>
+        <accountid>23456</accountid>
+        <accountname>Shop 2</accountname>
+        <locales>
+            <locale>de</locale>
+        </locales>
+        <countries>
+            <country>DE</country>
+        </countries>
+    </account>
+</response>

@@ -4,20 +4,20 @@
  */
 namespace ITRechtKanzlei;
 
-use Exception;
-
 class LTI {
-    const SDK_VERSION = '1.2.8';
+    public const SDK_VERSION = '1.2.9';
 
     private $ltiHandler;
     private $shopVersion;
     private $modulVersion;
-    private $xmlData;
-
     private $errorCallback = null;
-
     private $includeErrorStackTrace = false;
 
+    /**
+     * @param LTIHandler $ltiHandler Your implementation of the LTIHandler
+     * @param string $shopVersion
+     * @param string $modulVersion
+     */
     public function __construct(\ITRechtKanzlei\LTIHandler $ltiHandler, string $shopVersion, string $modulVersion) {
         $this->ltiHandler = $ltiHandler;
         $this->shopVersion = $shopVersion;
@@ -31,6 +31,15 @@ class LTI {
         return self::SDK_VERSION;
     }
 
+    /**
+     * You can define a callback that is executed if an exception is thrown during the
+     * processing of the XML request.
+     * This allows you to log unexpected errors, for example. However, the exception
+     * cannot be suppressed or replaced.
+     *
+     * @param callable|null $errorCallback
+     * @return $this
+     */
     public function setErrorCallback(?callable $errorCallback): self {
         $this->errorCallback = $errorCallback;
         return $this;
@@ -48,6 +57,14 @@ class LTI {
         return $this;
     }
 
+    /**
+     * Processes the received XML file. This function will call the corresponding handler
+     * methods of your LTIHandler class. Use the __toString() method of LTIResult to generate
+     * the expected XML response.
+     *
+     * @param string|null $xml
+     * @return LTIResult
+     */
     public function handleRequest(?string $xml): LTIResult {
         try {
             $this->ltiHandler->preHandleRequest();
@@ -61,34 +78,52 @@ class LTI {
             if (!function_exists('simplexml_load_string')) {
                 throw new LTIError('Extension SimpleXML not available on host system.', LTIError::PARSING_ERROR);
             }
-            $this->xmlData = simplexml_load_string($xml);
+            $xmlData = simplexml_load_string($xml);
 
-            if (!$this->xmlData) {
+            if (!$xmlData) {
                 throw new LTIError('Error parsing xml value.', LTIError::PARSING_ERROR);
             }
 
-            $this->checkXmlElementAvailable('api_version', LTIError::INVALID_API_VERSION);
-
-            if (isset($this->xmlData->user_auth_token) && strval($this->xmlData->user_auth_token)) {
-                // validate token
-                if (!$this->ltiHandler->isTokenValid($this->xmlData->user_auth_token)) {
-                    throw new LTIError('Invalid user auth token.', LTIError::INVALID_AUTH_TOKEN);
-                }
-            } else {
-                // validate user/pass
-                if (!$this->ltiHandler->validateUserPass($this->xmlData->user_username, $this->xmlData->user_password)) {
-                    throw new LTIError('Invalid user/pass.', LTIError::INVALID_AUTH_TOKEN);
-                }
+            $apiVersion = isset($xmlData->api_version) ? (string)$xmlData->api_version : '';
+            if (empty($apiVersion)) {
+                throw new LTIError('No API version has been provided.', LTIError::INVALID_API_VERSION);
+            }
+            if (!version_compare($apiVersion, '1.0', '>=')
+                || !version_compare($apiVersion, '2-dev', '<')
+            ) {
+                throw new LTIError('The API version is not supported.', LTIError::INVALID_API_VERSION);
             }
 
-            $this->checkXmlElementAvailable('action', LTIError::INVALID_ACTION);
-            $ltiResult = null;
+            if (isset($xmlData->user_auth_token) && strval($xmlData->user_auth_token)) {
+                // validate token
+                if (!$this->ltiHandler->isTokenValid($xmlData->user_auth_token)) {
+                    throw new LTIError('Invalid authentication token.', LTIError::INVALID_AUTH_TOKEN);
+                }
+            } elseif (
+                isset($xmlData->user_username) && strval($xmlData->user_username)
+                && isset($xmlData->user_password) && strval($xmlData->user_password)
+            ) {
+                // validate user/pass
+                if (!$this->ltiHandler->validateUserPass($xmlData->user_username, $xmlData->user_password)) {
+                    throw new LTIError('Invalid username and password.', LTIError::INVALID_AUTH_TOKEN);
+                }
+            } else {
+                throw new LTIError('Missing authentication credentials.', LTIError::INVALID_AUTH_TOKEN);
+            }
 
-            switch ($this->xmlData->action) {
+            $action = isset($xmlData->action) ? strtolower((string)$xmlData->action) : '';
+            if (empty($action)) {
+                throw new LTIError('Missing action.', LTIError::INVALID_ACTION);
+            }
+
+            switch ($action) {
                 case 'push':
-                    $ltiResult = $this->ltiHandler->handleActionPush(
-                        new \ITRechtKanzlei\LTIPushData($this->xmlData)
-                    );
+                    $data = new \ITRechtKanzlei\LTIPushData($xmlData);
+                    if (($data->getCountry() === 'XX') && ($data->getLanguageIso639_1() === 'xx')) {
+                        // Legacy credentials verification.
+                        throw new LTIError('Credentials OK', LTIError::VALID_AUTH_TOKEN);
+                    }
+                    $ltiResult = $this->ltiHandler->handleActionPush($data);
                     break;
                 case 'getaccountlist':
                     $ltiResult = $this->ltiHandler->handleActionGetAccountList();
@@ -97,7 +132,7 @@ class LTI {
                     $ltiResult = $this->ltiHandler->handleActionGetVersion();
                     break;
                 default:
-                    throw new LTIError('Invalid action sent: ' . $this->xmlData->action, LTIError::INVALID_ACTION);
+                    throw new LTIError('Invalid action sent: ' . $action, LTIError::INVALID_ACTION);
             }
 
             $ltiResult->setVersions($this->shopVersion, $this->modulVersion);
@@ -113,16 +148,6 @@ class LTI {
         }
     }
 
-    private function checkXmlElementAvailable(string $name, int $errorCode): void {
-        if (!isset($this->xmlData->$name)) {
-            throw new LTIError('XML element ' . $name . ' not set.', $errorCode);
-        }
-        $value = $this->xmlData->$name;
-        if (empty($value)) {
-            throw new LTIError('XML element ' . $name . '\'s value is empty.', $errorCode);
-        }
-    }
-
     /**
      * Helper method for generating a token. The token is used to authenticate
      * the IT Recht Kanzlei Push Service to your system.
@@ -133,7 +158,7 @@ class LTI {
      *
      * @param int $length The length of the token
      * @param string|null $alphabet A list of characters the token is composed of.
-     * @return A token
+     * @return string A token
      */
     public static function generateToken(int $length = 32, ?string $alphabet = null): string {
         if (!$alphabet) {

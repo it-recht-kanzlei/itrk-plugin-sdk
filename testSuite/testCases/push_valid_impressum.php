@@ -1,5 +1,6 @@
 <?php
-return new class($options) extends \PluginSDKTestSuite\UnitTest {
+return new class($options) extends \PluginSDKTestSuite\UnitTest
+{
 
     public function getTestName(): string
     {
@@ -14,6 +15,7 @@ return new class($options) extends \PluginSDKTestSuite\UnitTest {
   <sdk_php_version>1.2.5</sdk_php_version>
   <action>push</action>
   <user_auth_token>TEST_TOKEN</user_auth_token>
+  <user_account_id>123</user_account_id>
   <rechtstext_type>impressum</rechtstext_type>
   <rechtstext_type_ucase>IMPRESSUM</rechtstext_type_ucase>
   <rechtstext_title>Impressum</rechtstext_title>
@@ -33,8 +35,8 @@ return new class($options) extends \PluginSDKTestSuite\UnitTest {
 
     public function getResult(): array
     {
-        return array (
-          'status' => 'success',
-        );
+        return [
+            'status' => 'success',
+        ];
     }
 };

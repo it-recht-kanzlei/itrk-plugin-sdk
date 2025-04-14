@@ -39,6 +39,9 @@ class LTIVersionResult extends \ITRechtKanzlei\LTIResult {
      * If enabled the list of apache modules will be included in the response.
      * This helps the support of IT-Recht Kanzlei to troubleshoot
      * problematic interactions between the modules and this plugin.
+     *
+     * @param bool $include
+     * @return self
      */
     public function includeApacheModules(bool $include): self {
         $this->includeApacheModules = $include;
@@ -48,6 +51,10 @@ class LTIVersionResult extends \ITRechtKanzlei\LTIResult {
     /**
      * Adds a list of third party plugins to the response to help with
      * troubleshooting problematic interactions between those plugins.
+     *
+     * @param string $pluginName
+     * @param string $version
+     * @return self
      */
     public function addPluginInfo(string $pluginName, string $version): self {
         $this->systemPlugins[] = [

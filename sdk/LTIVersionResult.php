@@ -3,7 +3,7 @@
  * Please do NOT edit this class to ensure that the code remains executable.
  */
 
-namespace ITRechtKanzlei;
+namespace ITRechtKanzlei\LegalText\Sdk;
 
 use SimpleXMLElement;
 
@@ -13,7 +13,7 @@ use SimpleXMLElement;
  * This class can collect some additional information about its environment that
  * can be used for debugging and troubleshooting issues.
  */
-class LTIVersionResult extends \ITRechtKanzlei\LTIResult {
+class LTIVersionResult extends LTIResult {
     private $systemPlugins = [];
     private $includeApacheModules = false;
 

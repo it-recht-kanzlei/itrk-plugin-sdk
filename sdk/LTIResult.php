@@ -3,7 +3,7 @@
  * Please do NOT edit this class to ensure that the code remains executable.
  */
 
-namespace ITRechtKanzlei;
+namespace ITRechtKanzlei\LegalText\Sdk;
 
 use SimpleXMLElement;
 

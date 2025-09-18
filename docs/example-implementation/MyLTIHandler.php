@@ -1,10 +1,10 @@
 <?php
 
 /**
- * This is an example class which could represent the interface between
+ * This is an example class that could represent the interface between
  * your system and the SDK.
  */
-class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
+class MyLTIHandler extends \ITRechtKanzlei\LegalText\Sdk\LTIHandler {
 
     /**
      * You can inject any dependencies that are required for your system here.
@@ -15,7 +15,7 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
 
     /**
      * This method can be used to initialize resources or to validate preconditions
-     * that the target system has to fulfill in order to operate.
+     * that the target system has to fulfill to operate.
      * If the necessary conditions are not met, you can throw an exception here
      * which will be converted to a properly formatted error response.
      * @throws \Exception
@@ -40,14 +40,14 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
         ];
     }
 
-    public function handleActionGetVersion(): \ITRechtKanzlei\LTIVersionResult {
-        $result = new \ITRechtKanzlei\LTIVersionResult();
+    public function handleActionGetVersion(): \ITRechtKanzlei\LegalText\Sdk\LTIVersionResult {
+        $result = new \ITRechtKanzlei\LegalText\Sdk\LTIVersionResult();
         // If you do not want to share any additional data with the client portal of
         // IT-Recht Kanzlei, you can simply return the result here with
         // return $result;
         // or use the implementation of the parent class.
         //
-        // If you want to share additional data you can checkout the following examples:
+        // If you want to share additional data, you can check out the following examples:
         //
         // Includes the list of installed apache2 modules if php is running as an
         // apache2 module. This helps the support of IT-Recht Kanzlei to troubleshoot
@@ -68,9 +68,13 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
     /**
      * @throws Exception
      */
-    public function handleActionPush(\ITRechtKanzlei\LTIPushData $data): \ITRechtKanzlei\LTIPushResult {
-        // Implement the logic to store your pushed document to the shop here and return an object of ITRechtKanzlei\LTIPushResult with
-        // an url where to find the currently uploaded document. Replace the url with your document url.
+    public function handleActionPush(
+        \ITRechtKanzlei\LegalText\Sdk\LTIPushData $data
+    ): \ITRechtKanzlei\LegalText\Sdk\LTIPushResult
+    {
+        // Implement the logic to store your pushed document to the shop here and return an object of
+        // ITRechtKanzlei\LTIPushResult with a url where to find the currently uploaded document.
+        // Replace the url with your document url.
 
         // Basic implementation for this example:
         $filepath = __DIR__.'/storage/';
@@ -81,7 +85,7 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
             $data->getCountry()
         );
 
-        // If your system supports multiple sales channels you can resolve your sales channel here
+        // If your system supports multiple sales channels, you can resolve your sales channel here
         // using the method $data->getMultiShopId().
 
         //$filepath .= $data->getMultiShopId().'_';
@@ -95,15 +99,14 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
             file_put_contents($filepath.$filename.'.pdf', $pdf_binary);
         }
 
-        return new \ITRechtKanzlei\LTIPushResult('https://www.example.com/policies/legal-notice');
+        return new \ITRechtKanzlei\LegalText\Sdk\LTIPushResult('https://www.example.com/policies/legal-notice');
     }
 
     // This method is primarily intended for multi-shop systems, but should also be implemented for other systems
-    // in order to inform the IT-Recht Kanzlei's client portal about the languages and
-    // sales countries available in your system.
-    public function handleActionGetAccountList(): \ITRechtKanzlei\LTIAccountListResult {
+    // to inform the IT-Recht Kanzlei's client portal about the languages and sales countries available in your system.
+    public function handleActionGetAccountList(): \ITRechtKanzlei\LegalText\Sdk\LTIAccountListResult {
         // add all your shops here to the $accountList like seen in the example.
-        $accountList = new \ITRechtKanzlei\LTIAccountListResult();
+        $accountList = new \ITRechtKanzlei\LegalText\Sdk\LTIAccountListResult();
         $accountList->addAccount('3', 'example store name 1', ['de_DE', 'en_GB'], ['DE', 'AT', 'GB']);
         $accountList->addAccount('8', 'example store name 2', ['de', 'fr', 'it'], ['CH']);
         $accountList->addAccount('122', 'example store name 3', ['de'], ['DE']);

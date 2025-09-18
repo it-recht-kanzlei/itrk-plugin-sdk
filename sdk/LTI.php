@@ -2,7 +2,7 @@
 /*
  * Please do NOT edit this class to ensure that the code remains executable.
  */
-namespace ITRechtKanzlei;
+namespace ITRechtKanzlei\LegalText\Sdk;
 
 class LTI {
     public const SDK_VERSION = '1.2.9';
@@ -18,7 +18,7 @@ class LTI {
      * @param string $shopVersion
      * @param string $modulVersion
      */
-    public function __construct(\ITRechtKanzlei\LTIHandler $ltiHandler, string $shopVersion, string $modulVersion) {
+    public function __construct(LTIHandler $ltiHandler, string $shopVersion, string $modulVersion) {
         $this->ltiHandler = $ltiHandler;
         $this->shopVersion = $shopVersion;
         $this->modulVersion = $modulVersion;
@@ -118,7 +118,7 @@ class LTI {
 
             switch ($action) {
                 case 'push':
-                    $data = new \ITRechtKanzlei\LTIPushData($xmlData);
+                    $data = new LTIPushData($xmlData);
                     if (($data->getCountry() === 'XX') && ($data->getLanguageIso639_1() === 'xx')) {
                         // Legacy credentials verification.
                         throw new LTIError('Credentials OK', LTIError::VALID_AUTH_TOKEN);
@@ -142,7 +142,7 @@ class LTI {
             if (is_callable($this->errorCallback)) {
                 call_user_func($this->errorCallback, $e);
             }
-            $error = new \ITRechtKanzlei\LTIErrorResult($e, $this->includeErrorStackTrace);
+            $error = new LTIErrorResult($e, $this->includeErrorStackTrace);
             $error->setVersions($this->shopVersion, $this->modulVersion);
             return $error;
         }

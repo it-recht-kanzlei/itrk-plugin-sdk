@@ -3,11 +3,11 @@
  * Please do NOT edit this class to ensure that the code remains executable.
  */
 
-namespace ITRechtKanzlei;
+namespace ITRechtKanzlei\LegalText\Sdk;
 
 use SimpleXMLElement;
 
-class LTIPushResult extends \ITRechtKanzlei\LTIResult {
+class LTIPushResult extends LTIResult {
     private $targetUrl;
 
     public function __construct(?string $targetUrl = null) {

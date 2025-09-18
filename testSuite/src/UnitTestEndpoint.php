@@ -2,9 +2,11 @@
 
 namespace PluginSDKTestSuite;
 
+use ITRechtKanzlei\LegalText\Sdk;
+
 require_once __DIR__ . '/../../sdk/require_all.php';
 
-class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
+class MyLTIHandler extends Sdk\LTIHandler {
     public function isTokenValid(string $token): bool {
         return $token == 'TEST_TOKEN';
     }
@@ -12,7 +14,7 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
     /**
      * @throws \Exception
      */
-    public function handleActionPush(\ITRechtKanzlei\LTIPushData $data): \ITRechtKanzlei\LTIPushResult {
+    public function handleActionPush(Sdk\LTIPushData $data): Sdk\LTIPushResult {
         if (($data->getType() !== 'impressum') && $data->hasPdf()) {
             $data->getPdf();
         }
@@ -20,11 +22,11 @@ class MyLTIHandler extends \ITRechtKanzlei\LTIHandler {
         if (isset($_SERVER['HTTP_X_ITRKTEST_MULTISHOP'])) {
             $data->getMultiShopId();
         }
-        return new \ITRechtKanzlei\LTIPushResult('https://example.org/'.$data->getType());
+        return new Sdk\LTIPushResult('https://example.org/'.$data->getType());
     }
 
-    public function handleActionGetAccountList(): \ITRechtKanzlei\LTIAccountListResult {
-        $accountList = new \ITRechtKanzlei\LTIAccountListResult();
+    public function handleActionGetAccountList(): Sdk\LTIAccountListResult {
+        $accountList = new Sdk\LTIAccountListResult();
         $accountList->addAccount('1', 'example store name 1', ['de', 'en', 'fr']);
         $accountList->addAccount('2', 'example store name 2', ['de_DE']);
         $accountList->addAccount('3', 'example store name 3');
@@ -44,7 +46,7 @@ if (isset($_SERVER['CONTENT_TYPE']) && (strpos($_SERVER['CONTENT_TYPE'], 'multip
 }
 
 $ltiHandler = new MyLTIHandler();
-$lti = new \ITRechtKanzlei\LTI($ltiHandler, '1.2', '1.0');
+$lti = new Sdk\LTI($ltiHandler, '1.2', '1.0');
 $responseResult = $lti->handleRequest($payload);
 
 header('Content-Type: application/xml; charset=utf-8');

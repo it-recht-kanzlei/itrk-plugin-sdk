@@ -27,7 +27,7 @@ require_once __DIR__ . '/MyLTIHandler.php';
 $ltiHandler = new MyLTIHandler();
 
 // 2. Instantiate of ITRechtKanzlei\LTI and call handleRequest(...) method
-$lti = new \ITRechtKanzlei\LTI($ltiHandler, '1.2', '1.0');
+$lti = new \ITRechtKanzlei\LegalText\Sdk\LTI($ltiHandler, '1.2', '1.0');
 
 // Include a stack trace in the error result. Only used for debugging purposes.
 // Should be disabled for the production version of your plugin.

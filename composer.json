@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ITRechtKanzlei\\LegalText\\Sdk": "sdk/"
+            "ITRechtKanzlei\\LegalText\\Sdk\\": "sdk/"
         }
     }
 }
